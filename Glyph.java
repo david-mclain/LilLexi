@@ -1,3 +1,4 @@
+package LilLexi;
 
 public class Glyph <T> {
 	private T glyph;
