@@ -1,21 +1,34 @@
 package LilLexi;
+/**
+ * Houses any sort of marking elements.
+ * @author Admin
+ *
+ */
+public abstract class Glyph {
+	
+	/**
+	 * Gets the object 
+	 * @return
+	 */
+	public abstract Object get();
+	
+	/**
+	 * Sets the object
+	 * @param setVal
+	 */
+	public abstract void set( Object setVal);
 
-public class Glyph <T> {
-	private T glyph;
+	/**
+	 * Returns a string of object
+	 */
+	public abstract String toString();
 	
-	public Glyph() {
-		this(null);
-	}
 	
-	public Glyph(T glyph) {
-		this.glyph = glyph;
-	}
+	public abstract int getCol();
+	public abstract int getRow();
+	public abstract int getHeight();
+	public abstract int getWidth();
 	
-	public T get() {  return this.glyph;  }
-	
-	public void set(T glyph) {  this.glyph = glyph;  }
-
-	public String toString() {
-		return "" + glyph.toString();
-	}
+	public abstract void setLoc( int row, int col );
+	public abstract void setBounds( int hei, int wid);
 }
