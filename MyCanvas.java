@@ -1,48 +1,66 @@
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.swing.JPanel;
+
+@SuppressWarnings("serial")
 public class MyCanvas extends JPanel {
-	private List<Character> chars;	
+	private final int PIXELS_PER_ROW = 800;
+	private List<Glyph> glyphs;	
 	private LilLexiControl control;
-	MyCanvas(LilLexiControl control) {
-		this.control = control;
-		chars = new ArrayList<>();
-		this.addKeyListener(new KeyListener() {
+	public MyCanvas() {
+		glyphs = new ArrayList<>();
+		this.addKeyListener(new KeyListener() {	
+								public void keyPressed(KeyEvent e) {
+									int code = e.getKeyCode();
+									if (code == KeyEvent.VK_BACK_SPACE) {
+										if (control.size() > 0) {
+											control.removeLast();
+										}
+									}
+									else if ((code >= 44 && code <= 111) || code == 222 || code == 32) {
+										control.add(new MyCharacter(e.getKeyChar()));
+									}
+									repaint();
+								}
+								public void keyReleased(KeyEvent arg0) {}
+								public void keyTyped(KeyEvent arg0) {}					
+							});
 	
-	        public void keyPressed(KeyEvent e) {
-	            chars.add(e.getKeyChar());
-	            repaint();
-	            System.out.println("Pressed: " + e.getKeyChar());
-	        }
-	
-	        public void keyReleased(KeyEvent arg0) {}
-	        public void keyTyped(KeyEvent arg0) {}
-	
-	    });
-	
-	    setFocusable(true);
+		setFocusable(true);
 	}
 	
 	public void paint(Graphics g) {
 		super.paintComponent(g);
-	    //Graphics2D g2d = (Graphics2D) g;
-		int column = 0;
-	    g.clearRect(0, 0, 500, 500);
-	    g.setColor(Color.black);
-	    g.setFont(new Font("Cambria", Font.BOLD, 20));
-	    int row = g.getFont().getSize();
-	    for (Character c : chars) {
-	    	g.drawString(String.valueOf(c), column, row + 10);
-	    	column = (column + 18) % (40*18);
-			if (column == 0) row += 32;
-			System.out.println(c);
-	    }
+		g.clearRect(0, 0, 600, 600);
+		g.setColor(Color.black);
+		g.setFont(new Font("Monospaced", Font.BOLD, 21));
+		List<Glyph> glyphs = control.getGlyphs();
+		int x = g.getFont().getSize();
+		int row = x; //make row
+		int col = 0; //make col
+		for (Glyph glyph : glyphs) {
+			int width = g.getFontMetrics().stringWidth(glyph.toString());
+			g.drawString(glyph.toString(), col, row);
+			if ((col + x) / PIXELS_PER_ROW == 1) {
+				row += x;
+				col = 0;
+			}
+			else {
+				col = (col + width + 1) % (PIXELS_PER_ROW);
+			}
+		}
+	}
+	
+	public void clear() {
+		glyphs.clear();
+	}
+
+	public void setControl(LilLexiControl control) {
+		this.control = control;
 	}
 }
