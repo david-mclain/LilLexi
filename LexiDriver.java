@@ -1,3 +1,5 @@
+package LilLexi;
+
 public class LexiDriver {
 	private static LilLexiDocument doc = null;
 	public static void main(String[] args) {

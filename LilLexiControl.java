@@ -1,3 +1,4 @@
+package LilLexi;
 
 public class LilLexiControl {
 	private LilLexiDocument doc;
