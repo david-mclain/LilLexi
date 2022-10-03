@@ -1,10 +1,9 @@
-package LilLexi;
-
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.text.AttributedCharacterIterator.Attribute;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JPanel;
@@ -38,9 +37,9 @@ public class MyCanvas extends JPanel {
 	
 	public void paint(Graphics g) {
 		super.paintComponent(g);
-		g.clearRect(0, 0, 600, 600);
+		g.clearRect(0, 0, 800, 800);
 		g.setColor(Color.black);
-		g.setFont(new Font("Monospaced", Font.BOLD, 21));
+		g.setFont(control.getFont());
 		List<Glyph> glyphs = control.getGlyphs();
 		int x = g.getFont().getSize();
 		int row = x; //make row
@@ -49,7 +48,7 @@ public class MyCanvas extends JPanel {
 			int width = g.getFontMetrics().stringWidth(glyph.toString());
 			g.drawString(glyph.toString(), col, row);
 			if ((col + x) / PIXELS_PER_ROW == 1) {
-				row += x;
+				row = row + x + 5;
 				col = 0;
 			}
 			else {

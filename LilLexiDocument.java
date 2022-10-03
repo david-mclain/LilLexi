@@ -1,6 +1,5 @@
-package LilLexi;
-
 import java.util.List;
+import java.awt.Font;
 import java.util.ArrayList;
 
 public class LilLexiDocument {
@@ -8,11 +7,13 @@ public class LilLexiDocument {
 	private LilLexiUI UI;
 	private Stack<Glyph> undoStack;
 	private Stack<Glyph> redoStack;
+	private Font curFont;
 	
 	public LilLexiDocument() {
 		inputs = new ArrayList<>();
 		undoStack = new Stack<>();
 		redoStack = new Stack<>();
+		curFont = new Font("Monospaced", Font.PLAIN, 20);
 	}
 	
 	public void setUI(LilLexiUI UI) {  this.UI = UI;  }
@@ -23,10 +24,22 @@ public class LilLexiDocument {
 		UI.update();
 	}
 	
-	public List<Glyph> getGlyphs() {  return this.inputs;  }
+	public void setFont(String newFont) {
+		curFont = new Font(newFont, Font.PLAIN, 20);
+		UI.update();
+	}
+	
+	public Font getFont() {
+		return curFont;
+	}
+	
+	public List<Glyph> getGlyphs() {
+		return this.inputs;
+	}
 
 	public void clear() {
 		inputs.clear();
+		UI.update();
 	}
 	
 	public void removeLast() {
