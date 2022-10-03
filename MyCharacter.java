@@ -1,20 +1,21 @@
+package LilLexi;
+
 public class MyCharacter extends Glyph {
 	private char myChar;
 	private int row, col, hei, wid;
 
 	
-
-	public MyCharacter(char c) {
-		// Default values
-		this.myChar = c;
-	}
-
 	public MyCharacter() {
 		// Default values
 		row = -1;
 		col = -1;
 		hei = -1;
 		wid = -1;
+	}
+	
+	public MyCharacter(char c) {
+		// Default values
+		this.myChar = c;
 	}
 	
 	@Override

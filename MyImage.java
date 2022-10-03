@@ -6,6 +6,14 @@ public class MyImage extends Glyph {
 	private int row, col, hei, wid;
 	
 	public MyImage() {
+		// Default Values
+		row = -1; col = -1;
+		hei = -1; wid = -1;
+	}
+	
+	public MyImage(ImageIcon inputImage) {
+		image = inputImage;
+		// Default values
 		row = -1; col = -1;
 		hei = -1; wid = -1;
 	}
