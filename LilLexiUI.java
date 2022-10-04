@@ -1,3 +1,4 @@
+package LilLexi;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -77,7 +78,6 @@ public class LilLexiUI {
 	
 	private void changeFont(String newFont) {
 		control.setFont(newFont);
-		panel.repaint();
 	}
 	
 	private void makeCanvas() {

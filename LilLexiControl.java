@@ -1,3 +1,4 @@
+package LilLexi;
 import java.awt.Font;
 import java.util.List;
 
@@ -18,6 +19,18 @@ public class LilLexiControl {
 
 	public Font getFont() {
 		return doc.getFont();
+	}
+	
+	public int getRow() {
+		return doc.getRow();
+	}
+	
+	public int getCol() {
+		return doc.getCol();
+	}
+	
+	public void updatePos(int x, int y) {
+		doc.updatePos(x, y);
 	}
 	
 	public void clear() {

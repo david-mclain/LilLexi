@@ -1,19 +1,23 @@
+package LilLexi;
 import java.util.List;
 import java.awt.Font;
 import java.util.ArrayList;
 
 public class LilLexiDocument {
-	private List<Glyph> inputs;
+	public static final int PIXELS_PER_ROW = 800;
 	private LilLexiUI UI;
+	private Compositor compositor;
+	private List<Glyph> inputs;
 	private Stack<Glyph> undoStack;
 	private Stack<Glyph> redoStack;
 	private Font curFont;
 	
 	public LilLexiDocument() {
+		curFont = new Font("Times New Roman", Font.PLAIN, 20);
 		inputs = new ArrayList<>();
 		undoStack = new Stack<>();
 		redoStack = new Stack<>();
-		curFont = new Font("Monospaced", Font.PLAIN, 20);
+		compositor = new Compositor(curFont.getSize(), 0);
 	}
 	
 	public void setUI(LilLexiUI UI) {  this.UI = UI;  }
@@ -58,5 +62,18 @@ public class LilLexiDocument {
 	public void redo() {
 		inputs.add(redoStack.pop());
 		undoStack.push(inputs.get(inputs.size() - 1));
+	}
+
+	public int getRow() {
+		return compositor.getRow();
+	}
+
+	public int getCol() {
+		return compositor.getCol();
+	}
+
+	public void updatePos(int x, int y) {
+		compositor.setLoc(x, y);
+		UI.update();
 	}
 }
