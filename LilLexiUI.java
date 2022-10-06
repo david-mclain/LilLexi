@@ -4,15 +4,14 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
-
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Panel;
-import java.awt.Rectangle;
 import java.awt.Shape;
+import javax.swing.JTextArea;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.List;
 
 public class LilLexiUI {
 	
@@ -26,6 +25,52 @@ public class LilLexiUI {
 		shell.setSize(900, 900);
 		shell.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		shell.setVisible(true);
+		/*
+		JTextArea are = new JTextArea();
+		shell.add(are);
+		are.setSize(new Dimension(800, 800));
+		are.setVisible(true);
+		are.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+		are.setLineWrap(true);
+		are.setWrapStyleWord(true);
+		are.setEditable(false);
+		are.addKeyListener(new KeyListener() {
+			public void keyPressed(KeyEvent e) {
+				System.out.println("Key clicked");
+				//graphics.setFont(control.getFont());
+				int code = e.getKeyCode();
+				Glyph curGlyph;
+				if (code == KeyEvent.VK_BACK_SPACE) {
+					if (control.size() > 0) {
+						are.setCaretPosition(are.getCaretPosition() - 1);
+						are.insert("", are.getCaretPosition());
+						control.removeLast();
+					}
+				}
+				//else if (code == 9) {
+				//	for (int i = 0; i < 4; i++)
+				//		control.add(new MyCharacter(' '));
+				//}
+				else if ((code >= 44 && code <= 111) || code == 222 || code == 32 || code == 10) {
+					curGlyph = new MyCharacter(e.getKeyChar());
+					control.add(curGlyph);
+					are.insert(curGlyph.toString(), are.getCaretPosition());
+					//control.add(new MyCharacter(e.getKeyChar()));
+				}
+				//repaint();
+			}
+			public void keyReleased(KeyEvent arg0) {}
+			public void keyTyped(KeyEvent arg0) {}
+		});
+		/*
+		 * 
+		 * 
+		 * 
+		 * TEST TO SEE IF YOU CAN USE TEXT AREA INSTEAD OF USING A CANVAS
+		 * 
+		 * 
+		 * 
+		 */
 		//JScrollPane pane = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		//pane.setFocusable(false);
 		//shell.setContentPane(pane);

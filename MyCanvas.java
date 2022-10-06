@@ -19,11 +19,6 @@ public class MyCanvas extends JPanel {
 		this.addKeyListener(new KeyListener() {	
 								public void keyPressed(KeyEvent e) {
 									graphics.setFont(control.getFont());
-									System.out.println(graphics.getFontMetrics().stringWidth("This"));
-									System.out.println(graphics.getFontMetrics().stringWidth("T"));
-									System.out.println(graphics.getFontMetrics().stringWidth("h"));
-									System.out.println(graphics.getFontMetrics().stringWidth("i"));
-									System.out.println(graphics.getFontMetrics().stringWidth("s"));
 									int code = e.getKeyCode();
 									Glyph curGlyph;
 									if (code == KeyEvent.VK_BACK_SPACE) {
