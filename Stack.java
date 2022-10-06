@@ -1,3 +1,4 @@
+package LilLexi;
 public class Stack <T> {
 	private final static int DEFAULT_SIZE = 10;
 	private int back;

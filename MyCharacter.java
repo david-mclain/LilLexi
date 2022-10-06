@@ -1,5 +1,4 @@
 package LilLexi;
-
 public class MyCharacter extends Glyph {
 	private char myChar;
 	private int row, col, hei, wid;

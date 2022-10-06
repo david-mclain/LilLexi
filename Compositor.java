@@ -1,5 +1,4 @@
 package LilLexi;
-
 public class Compositor {
 	private int row, col;
 	

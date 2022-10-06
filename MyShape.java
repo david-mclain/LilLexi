@@ -1,8 +1,5 @@
 package LilLexi;
-
 import java.awt.Shape;
-
-import javax.swing.ImageIcon;
 
 public class MyShape extends Glyph {
 	private int row, col, hei, wid;
