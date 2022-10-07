@@ -50,4 +50,10 @@ public class MyShape extends Glyph {
 	@Override
 	public void setBounds(int hei, int wid) { this.hei = hei; this.wid = wid; }
 
+	@Override
+	protected void setWidth(int width) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

@@ -9,11 +9,9 @@ import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
 public class MyCanvas extends JPanel {
-	private List<Glyph> glyphs;	
 	private LilLexiControl control;
 	private Graphics graphics;
 	public MyCanvas() {
-		glyphs = new ArrayList<>();
 		graphics = null;
 		repaint();
 		this.addKeyListener(new KeyListener() {	
@@ -47,33 +45,22 @@ public class MyCanvas extends JPanel {
 	public void paint(Graphics g) {
 		super.paintComponent(g);
 		if (graphics == null)
-			graphics = g;
+			setGraphics(g);
 		g.clearRect(0, 0, 800, 800);
 		g.setColor(Color.black);
 		g.setFont(control.getFont());
 		List<Glyph> glyphs = control.getGlyphs();
-		int x = control.getFont().getSize();
-		int row = x; //make row
-		int col = 0; //make col
 		for (Glyph glyph : glyphs) {
-			int width = g.getFontMetrics().stringWidth(glyph.toString());
-			//System.out.println(width);
-			g.drawString(glyph.toString(), col, row);
-			if ((col + x) / LilLexiDocument.PIXELS_PER_ROW == 1 || glyph.toString().equals("\n")) {
-				row = row + x + 5;
-				col = 0;
-			}
-			else {
-				col = (col + width + 1) % (LilLexiDocument.PIXELS_PER_ROW);
-			}
+			g.drawString(glyph.toString(), glyph.getCol(), glyph.getRow());
 		}
-	}
-	
-	public void clear() {
-		glyphs.clear();
 	}
 
 	public void setControl(LilLexiControl control) {
 		this.control = control;
+	}
+	
+	private void setGraphics(Graphics g) {
+		this.graphics = g;
+		control.setGraphics(g);
 	}
 }

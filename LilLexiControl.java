@@ -1,5 +1,6 @@
 package LilLexi;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.util.List;
 
 public class LilLexiControl {
@@ -59,5 +60,9 @@ public class LilLexiControl {
 	
 	public void redo() {
 		doc.redo();
+	}
+
+	public void setGraphics(Graphics g) {
+		doc.setGraphics(g);
 	}
 }

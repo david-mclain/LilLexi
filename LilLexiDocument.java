@@ -1,12 +1,14 @@
 package LilLexi;
 import java.util.List;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.util.ArrayList;
 
 public class LilLexiDocument {
 	public static final int PIXELS_PER_ROW = 800;
 	private LilLexiUI UI;
 	private Compositor compositor;
+	private Graphics g;
 	private List<Glyph> inputs;
 	private Stack<Glyph> undoStack;
 	private Stack<Glyph> redoStack;
@@ -23,9 +25,15 @@ public class LilLexiDocument {
 	public void setUI(LilLexiUI UI) {  this.UI = UI;  }
 	
 	public void add(Glyph glyph) {
+		if (glyph instanceof  MyCharacter) {
+			glyph.setWidth(g.getFontMetrics().stringWidth(glyph.toString()));
+			glyph.setLoc(compositor.getRow(), compositor.getCol());
+		}
 		inputs.add(glyph);
 		undoStack.push(glyph);
 		UI.update();
+		compositor.setLoc(compositor.getRow(), compositor.getCol() + glyph.getWidth() + 2, curFont.getSize());
+		System.out.println("Row: " + compositor.getRow() + ", Col: " + compositor.getCol());
 	}
 	
 	public void setFont(String newFont) {
@@ -48,6 +56,7 @@ public class LilLexiDocument {
 	
 	public void removeLast() {
 		inputs.remove(inputs.size() - 1);
+		compositor.setLoc(compositor.getRow(), compositor.getCol() - inputs.get(inputs.size() - 1).getWidth() - 2, curFont.getSize());
 	}
 	
 	public int size() {
@@ -73,7 +82,10 @@ public class LilLexiDocument {
 	}
 
 	public void updatePos(int x, int y) {
-		compositor.setLoc(x, y);
 		UI.update();
+	}
+
+	public void setGraphics(Graphics g) {
+		this.g = g;
 	}
 }

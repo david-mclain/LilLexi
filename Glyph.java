@@ -31,4 +31,6 @@ public abstract class Glyph {
 	
 	public abstract void setLoc( int row, int col );
 	public abstract void setBounds( int hei, int wid);
+
+	protected abstract void setWidth(int width);
 }

@@ -85,6 +85,7 @@ public class LilLexiUI {
 		panel.setBackground(Color.white);
 		panel.setVisible(true);
 		shell.add(panel);
+		panel.requestFocus();
 	}
 	
 	private void createNew() {

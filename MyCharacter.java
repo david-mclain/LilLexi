@@ -50,6 +50,11 @@ public class MyCharacter extends Glyph {
 	
 	@Override
 	public void setBounds(int hei, int wid) { this.hei = hei; this.wid = wid; }
+
+	@Override
+	protected void setWidth(int width) {
+		this.wid = width;
+	}
 	
 
 }
