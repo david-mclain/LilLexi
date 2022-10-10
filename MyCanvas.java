@@ -1,22 +1,34 @@
 package LilLexi;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
 public class MyCanvas extends JPanel {
 	private LilLexiControl control;
 	private Graphics graphics;
+	private BufferedImage image;
+	private JLabel picLabel;
+	private ImageIcon icon;
+	private int i;
 	public MyCanvas() {
 		graphics = null;
 		repaint();
 		this.addKeyListener(new KeyListener() {	
 								public void keyPressed(KeyEvent e) {
-									graphics.setFont(control.getFont());
+									i++;
+									//graphics.setFont(control.getFont());
 									int code = e.getKeyCode();
 									Glyph curGlyph;
 									if (code == KeyEvent.VK_BACK_SPACE) {
@@ -49,16 +61,42 @@ public class MyCanvas extends JPanel {
 	}
 	
 	public void paint(Graphics g) {
+		System.out.println("test");
 		super.paintComponent(g);
-		if (graphics == null)
-			setGraphics(g);
+		setGraphics(g);
 		g.clearRect(0, 0, 800, 800);
 		g.setColor(Color.black);
 		g.setFont(control.getFont());
+		/*
+		if (i >= 3) {
+			System.out.println("i == 3");
+			g.drawOval(200, 200, 50, 50);
+			drawImage();
+			icon.paintIcon(this, g, 100, 100);
+		}
+		*/
 		List<Glyph> glyphs = control.getGlyphs();
 		for (Glyph glyph : glyphs) {
-			g.drawString(glyph.toString(), glyph.getCol(), glyph.getRow());
+			if (glyph instanceof MyCharacter) {
+				g.drawString(glyph.toString(), glyph.getCol(), glyph.getRow());
+				if (true) {
+					g.setColor(Color.red);
+					g.drawLine(glyph.getCol(), glyph.getRow(), glyph.getCol() + glyph.getWidth(), glyph.getRow());
+					g.setColor(Color.black);
+				}
+			}
+			else if (glyph instanceof MyImage)
+				((ImageIcon) glyph.get()).paintIcon(this, g, glyph.getCol(), glyph.getRow());
 		}
+	}
+	
+	public void drawImage() {
+		try {
+			image = ImageIO.read(MyCanvas.class.getResourceAsStream("apple.jpg"));
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		icon = new ImageIcon(image);
 	}
 
 	public void setControl(LilLexiControl control) {

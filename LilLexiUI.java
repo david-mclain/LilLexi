@@ -12,6 +12,8 @@ import java.awt.Font;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 public class LilLexiUI {
 	
@@ -29,6 +31,26 @@ public class LilLexiUI {
 		//pane.setFocusable(false);
 		//shell.setContentPane(pane);
 		makeCanvas();
+		shell.addMouseListener(new MouseListener() {
+
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				System.out.println("Row: " + arg0.getX());
+				System.out.println("Col: " + arg0.getY());
+			}
+			@Override
+			public void mouseEntered(MouseEvent arg0) {	}
+
+			@Override
+			public void mouseExited(MouseEvent arg0) {}
+
+			@Override
+			public void mousePressed(MouseEvent arg0) {}
+
+			@Override
+			public void mouseReleased(MouseEvent arg0) {}
+			
+		});
 		this.setController(control);
 	}
 	
