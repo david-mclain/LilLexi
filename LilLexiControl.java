@@ -22,13 +22,13 @@ public class LilLexiControl {
 		return doc.getFont();
 	}
 	
-	public int getRow() {
-		return doc.getRow();
-	}
-	
-	public int getCol() {
-		return doc.getCol();
-	}
+//	public int getRow() {
+//		return doc.getRow();
+//	}
+//	
+//	public int getCol() {
+//		return doc.getCol();
+//	}
 	
 	public void updatePos(int x, int y) {
 		doc.updatePos(x, y);
@@ -72,5 +72,13 @@ public class LilLexiControl {
 	
 	public void decreaseCursorIndex() {
 		doc.decreaseCursorIndex();
+	}
+	
+	public void decreaseCursorRow() {
+		doc.decreaseCursorRow();
+	}
+	
+	public void increaseCursorRow() {
+		doc.increaseCursorRow();
 	}
 }

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class LilLexiDocument {
 	public static final int PIXELS_PER_ROW = 800;
 	private LilLexiUI UI;
-	private Compositor compositor;
+	private Composite composite;
 	private Graphics g;
 	private List<Glyph> inputs;
 	private Stack<Glyph> undoStack;
@@ -20,7 +20,7 @@ public class LilLexiDocument {
 		inputs = new ArrayList<>();
 		undoStack = new Stack<>();
 		redoStack = new Stack<>();
-		compositor = new Compositor(curFont.getSize(), 0);
+		composite = new Composite(curFont.getSize(), 0, inputs);
 		cursorIndex = 0;
 	}
 	
@@ -29,26 +29,12 @@ public class LilLexiDocument {
 	public void add(Glyph glyph) {
 		if (glyph instanceof  MyCharacter) {
 			glyph.setWidth(g.getFontMetrics().stringWidth(glyph.toString()));
-			//glyph.setLoc(compositor.getRow(), compositor.getCol());
 		}
 		inputs.add(cursorIndex, glyph);
 		undoStack.push(glyph);
-		
-		//compositor.setLoc(compositor.getRow(), compositor.getCol() + glyph.getWidth() + 2, curFont.getSize());
-		
-		compositor.reset();
-		for (int i = 0; i < inputs.size(); i++) {
-			inputs.get(i).setLoc(compositor.getRow(), compositor.getCol());
-			compositor.setLoc(compositor.getRow(), compositor.getCol() + inputs.get(i).getWidth() + 2, curFont.getSize());
-		}
+		composite.compose();
 		UI.update();
 		cursorIndex++;
-		//System.out.println("Row: " + compositor.getRow() + ", Col: " + compositor.getCol());
-		// TODO DELETE, test code for printing
-		for (int i = 0; i < inputs.size(); i++) {
-			System.out.println("row = " + inputs.get(i).getRow() + "col = " + inputs.get(i).getCol());
-		}
-		System.out.println();
 	}
 	
 	public void setFont(String newFont) {
@@ -73,13 +59,8 @@ public class LilLexiDocument {
 	public void removeLast() {
 		inputs.remove(cursorIndex - 1);
 		cursorIndex--;
-		compositor.reset();
-		for (int i = 0; i < inputs.size(); i++) {
-			inputs.get(i).setLoc(compositor.getRow(), compositor.getCol());
-			compositor.setLoc(compositor.getRow(), compositor.getCol() + inputs.get(i).getWidth() + 2, curFont.getSize());
-		}
+		composite.compose();
 		UI.update();
-		//compositor.setLoc(compositor.getRow(), compositor.getCol() - inputs.get(inputs.size() - 1).getWidth() - 2, curFont.getSize());
 	}
 	
 	public int size() {
@@ -96,13 +77,13 @@ public class LilLexiDocument {
 		undoStack.push(inputs.get(inputs.size() - 1));
 	}
 
-	public int getRow() {
-		return compositor.getRow();
-	}
-
-	public int getCol() {
-		return compositor.getCol();
-	}
+//	public int getRow() {
+//		return compositor.getRow();
+//	}
+//
+//	public int getCol() {
+//		return compositor.getCol();
+//	}
 
 	public void updatePos(int x, int y) {
 		UI.update();
@@ -122,5 +103,13 @@ public class LilLexiDocument {
 		if (cursorIndex > 0) {
 			cursorIndex--;
 		}
+	}
+	
+	public void decreaseCursorRow() {
+		cursorIndex = composite.changeCursorRow(cursorIndex, -(curFont.getSize() + 10));
+	}
+	
+	public void increaseCursorRow() {
+		cursorIndex = composite.changeCursorRow(cursorIndex, curFont.getSize() + 10);
 	}
 }
