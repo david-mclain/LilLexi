@@ -1,6 +1,6 @@
 package LilLexi;
 public class Compositor {
-	private int row, col;
+	private int startRow, row, col;
 	private int maxHeight;
 	private LilLexiControl con;
 	
@@ -11,6 +11,7 @@ public class Compositor {
 	}
 	
 	public Compositor(int row, int col) {
+	    startRow = row;
 		this.row = row;
 		this.col = col;
 	}
@@ -35,5 +36,10 @@ public class Compositor {
 	public int getRow() { return row; }
 	
 	public int getCol() { return col; }
+	
+	public void reset() {
+		row = startRow;
+		col = 0;
+	}
 	
 }

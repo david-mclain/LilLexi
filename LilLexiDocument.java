@@ -13,6 +13,7 @@ public class LilLexiDocument {
 	private Stack<Glyph> undoStack;
 	private Stack<Glyph> redoStack;
 	private Font curFont;
+	private int  cursorIndex;
 	
 	public LilLexiDocument() {
 		curFont = new Font("Times New Roman", Font.PLAIN, 20);
@@ -20,6 +21,7 @@ public class LilLexiDocument {
 		undoStack = new Stack<>();
 		redoStack = new Stack<>();
 		compositor = new Compositor(curFont.getSize(), 0);
+		cursorIndex = 0;
 	}
 	
 	public void setUI(LilLexiUI UI) {  this.UI = UI;  }
@@ -27,13 +29,26 @@ public class LilLexiDocument {
 	public void add(Glyph glyph) {
 		if (glyph instanceof  MyCharacter) {
 			glyph.setWidth(g.getFontMetrics().stringWidth(glyph.toString()));
-			glyph.setLoc(compositor.getRow(), compositor.getCol());
+			//glyph.setLoc(compositor.getRow(), compositor.getCol());
 		}
-		inputs.add(glyph);
+		inputs.add(cursorIndex, glyph);
 		undoStack.push(glyph);
+		
+		//compositor.setLoc(compositor.getRow(), compositor.getCol() + glyph.getWidth() + 2, curFont.getSize());
+		
+		compositor.reset();
+		for (int i = 0; i < inputs.size(); i++) {
+			inputs.get(i).setLoc(compositor.getRow(), compositor.getCol());
+			compositor.setLoc(compositor.getRow(), compositor.getCol() + inputs.get(i).getWidth() + 2, curFont.getSize());
+		}
 		UI.update();
-		compositor.setLoc(compositor.getRow(), compositor.getCol() + glyph.getWidth() + 2, curFont.getSize());
-		System.out.println("Row: " + compositor.getRow() + ", Col: " + compositor.getCol());
+		cursorIndex++;
+		//System.out.println("Row: " + compositor.getRow() + ", Col: " + compositor.getCol());
+		// TODO DELETE, test code for printing
+		for (int i = 0; i < inputs.size(); i++) {
+			System.out.println("row = " + inputs.get(i).getRow() + "col = " + inputs.get(i).getCol());
+		}
+		System.out.println();
 	}
 	
 	public void setFont(String newFont) {
@@ -55,8 +70,9 @@ public class LilLexiDocument {
 	}
 	
 	public void removeLast() {
-		inputs.remove(inputs.size() - 1);
-		compositor.setLoc(compositor.getRow(), compositor.getCol() - inputs.get(inputs.size() - 1).getWidth() - 2, curFont.getSize());
+		inputs.remove(cursorIndex - 1);
+		cursorIndex--;
+		//compositor.setLoc(compositor.getRow(), compositor.getCol() - inputs.get(inputs.size() - 1).getWidth() - 2, curFont.getSize());
 	}
 	
 	public int size() {
@@ -87,5 +103,17 @@ public class LilLexiDocument {
 
 	public void setGraphics(Graphics g) {
 		this.g = g;
+	}
+	
+	public void increaseCursorIndex() {
+		if (cursorIndex < inputs.size() - 1) {
+			cursorIndex++;
+		}
+	}
+	
+	public void decreaseCursorIndex() {
+		if (cursorIndex > 0) {
+			cursorIndex--;
+		}
 	}
 }
