@@ -1,4 +1,6 @@
 package LilLexi;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -14,12 +16,16 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 public class LilLexiUI {
 	
 	private LilLexiControl control;
 	private JFrame shell;
 	private MyCanvas panel;
+	private BufferedImage image;
+	private ImageIcon icon;
 	
 	public LilLexiUI(LilLexiControl control) {
 		this.shell = new JFrame("Lil Lexi");
@@ -60,10 +66,6 @@ public class LilLexiUI {
 		// Create file options for new, open, save and quit
 		JMenuItem newOption = new JMenuItem("New");
 		newOption.addActionListener(e -> createNew());
-		JMenuItem openOption = new JMenuItem("Open");
-		openOption.addActionListener(e -> openFile());
-		JMenuItem saveOption = new JMenuItem("Save");
-		saveOption.addActionListener(e -> saveFile());
 		JMenuItem quitOption = new JMenuItem("Quit");
 		quitOption.addActionListener(e -> control.quit());
 		// Edit Menu
@@ -84,15 +86,20 @@ public class LilLexiUI {
 		fontMenu.add(fontTNR);
 		fontMenu.add(fontArial);
 		
-		
+		// Insert Menu
+		JMenu insertMenu = new JMenu("Insert");
+		JMenuItem imageOption = new JMenuItem("Image");
+		imageOption.addActionListener(e -> addImage());
+		JMenuItem shapeOption = new JMenuItem("Shape");
+		shapeOption.addActionListener(e -> control.add(new MyShape()));
+		insertMenu.add(imageOption);
+		insertMenu.add(shapeOption);
 		// Add options to menu
 		fileMenu.add(newOption);
-		fileMenu.add(openOption);
-		fileMenu.add(saveOption);
-		fileMenu.add(quitOption);
 		menu.add(fileMenu);
 		menu.add(editMenu);
 		menu.add(fontMenu);
+		menu.add(insertMenu);
 		shell.setJMenuBar(menu);
 		//shell.pack();
 	}
@@ -113,15 +120,6 @@ public class LilLexiUI {
 	private void createNew() {
 		control.clear();
 	}
-
-	private void openFile() {
-		
-	}
-
-	private void saveFile() {
-		
-	}
-
 	
 	public void start() {
 		
@@ -134,5 +132,19 @@ public class LilLexiUI {
 	public void setController(LilLexiControl control) {
 		panel.setControl(control);
 		this.control = control;
+	}
+	
+	private void addImage() {
+		setImage();
+		control.add(new MyImage(icon));
+	}
+	
+	public void setImage() {
+		try {
+			image = ImageIO.read(MyCanvas.class.getResourceAsStream("apple.jpg"));
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		icon = new ImageIcon(image);
 	}
 }
