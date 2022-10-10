@@ -10,7 +10,7 @@ public class LilLexiDocument {
 	private Composite composite;
 	private Graphics g;
 	private List<Glyph> inputs;
-	private Stack<Glyph> undoStack;
+	private Stack<Undo> undoStack;
 	private Stack<Glyph> redoStack;
 	private Font curFont;
 	private int  cursorIndex;
@@ -31,14 +31,22 @@ public class LilLexiDocument {
 			glyph.setWidth(g.getFontMetrics().stringWidth(glyph.toString()));
 		}
 		inputs.add(cursorIndex, glyph);
-		undoStack.push(glyph);
+		cursorIndex++;
+		Undo change = new Undo(glyph, cursorIndex, true);
+		undoStack.push(change);
 		composite.compose();
 		UI.update();
-		cursorIndex++;
 	}
 	
 	public void setFont(String newFont) {
 		curFont = new Font(newFont, Font.PLAIN, 20);
+		g.setFont(curFont);
+		for( Glyph glyph: inputs) {
+			if (glyph instanceof  MyCharacter) {
+				glyph.setWidth(g.getFontMetrics().stringWidth(glyph.toString()));
+			}
+		}
+		composite.compose();
 		UI.update();
 	}
 	
@@ -57,10 +65,14 @@ public class LilLexiDocument {
 	}
 	
 	public void removeLast() {
-		inputs.remove(cursorIndex - 1);
-		cursorIndex--;
-		composite.compose();
-		UI.update();
+		if (cursorIndex > 0) {
+			cursorIndex--;
+			//inputs.remove(cursorIndex);
+			Undo change = new Undo(inputs.remove(cursorIndex), cursorIndex, false);
+			undoStack.push(change);
+			composite.compose();
+			UI.update();
+		}
 	}
 	
 	public int size() {
@@ -68,13 +80,22 @@ public class LilLexiDocument {
 	}
 	
 	public void undo() {
-		inputs.remove(inputs.size() - 1);
-		redoStack.push(undoStack.pop());
+		Undo action = undoStack.pop();
+		if(action.isInsert()) {
+			cursorIndex = action.getIndex();
+			removeLast();
+		} else {
+			cursorIndex = action.getIndex();
+			add(action.getGlyph());
+		}
+		undoStack.pop();
+		//inputs.remove(inputs.size() - 1);
+		//redoStack.push(undoStack.pop());
 	}
 	
 	public void redo() {
 		inputs.add(redoStack.pop());
-		undoStack.push(inputs.get(inputs.size() - 1));
+		//undoStack.push(inputs.get(inputs.size() - 1));
 	}
 
 //	public int getRow() {
