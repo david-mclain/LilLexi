@@ -1,17 +1,13 @@
 package LilLexi;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
@@ -19,7 +15,6 @@ public class MyCanvas extends JPanel {
 	private LilLexiControl control;
 	private Graphics graphics;
 	private BufferedImage image;
-	private JLabel picLabel;
 	private ImageIcon icon;
 	private int i;
 	public MyCanvas() {
@@ -73,14 +68,12 @@ public class MyCanvas extends JPanel {
 		g.clearRect(0, 0, 800, 800);
 		g.setColor(Color.black);
 		g.setFont(control.getFont());
-		/*
-		if (i >= 3) {
-			System.out.println("i == 3");
-			g.drawOval(200, 200, 50, 50);
-			drawImage();
-			icon.paintIcon(this, g, 100, 100);
+		//drawImage();
+		//icon.paintIcon(this, g, 100, 100);
+		if (control.size() > 0) {
+			int[] loc = control.getCursorLoc();
+			g.drawString("|", loc[1], loc[0]);
 		}
-		*/
 		List<Glyph> glyphs = control.getGlyphs();
 		for (Glyph glyph : glyphs) {
 			if (glyph instanceof MyCharacter) {
@@ -91,8 +84,12 @@ public class MyCanvas extends JPanel {
 					g.setColor(Color.black);
 				}
 			}
-			else if (glyph instanceof MyImage)
+			else if (glyph instanceof MyImage) {
 				((ImageIcon) glyph.get()).paintIcon(this, g, glyph.getCol(), glyph.getRow());
+			}
+			else if (glyph instanceof MyShape) {
+				g.drawRect(glyph.getCol(), glyph.getRow(), glyph.getWidth(), glyph.getHeight());
+			}
 		}
 	}
 	

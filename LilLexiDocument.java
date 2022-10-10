@@ -30,6 +30,9 @@ public class LilLexiDocument {
 		if (glyph instanceof  MyCharacter) {
 			glyph.setWidth(g.getFontMetrics().stringWidth(glyph.toString()));
 		}
+		else if (glyph instanceof MyShape) {
+			glyph.setLoc(glyph.getRow() - curFont.getSize(), glyph.getCol());
+		}
 		inputs.add(cursorIndex, glyph);
 		cursorIndex++;
 		Undo change = new Undo(glyph, cursorIndex, true);
@@ -41,7 +44,8 @@ public class LilLexiDocument {
 	public void setFont(String newFont) {
 		curFont = new Font(newFont, Font.PLAIN, 20);
 		g.setFont(curFont);
-		for( Glyph glyph: inputs) {
+
+		for (Glyph glyph : inputs) {
 			if (glyph instanceof  MyCharacter) {
 				glyph.setWidth(g.getFontMetrics().stringWidth(glyph.toString()));
 			}
@@ -132,5 +136,13 @@ public class LilLexiDocument {
 	
 	public void increaseCursorRow() {
 		cursorIndex = composite.changeCursorRow(cursorIndex, curFont.getSize() + 10);
+	}
+
+	public int[] getCursorLoc() {
+		int[] ret = new int[2];
+		Glyph cur = inputs.get(cursorIndex - 1);
+		ret[0] = cur.getRow();
+		ret[1] = cur.getCol() + cur.getWidth();
+		return ret;
 	}
 }
