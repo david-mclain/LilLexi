@@ -65,4 +65,12 @@ public class LilLexiControl {
 	public void setGraphics(Graphics g) {
 		doc.setGraphics(g);
 	}
+	
+	public void increseCursorIndex() {
+		doc.increaseCursorIndex();
+	}
+	
+	public void decreaseCursorIndex() {
+		doc.decreaseCursorIndex();
+	}
 }

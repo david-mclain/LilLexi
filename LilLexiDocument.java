@@ -66,12 +66,19 @@ public class LilLexiDocument {
 
 	public void clear() {
 		inputs.clear();
+		cursorIndex = 0;
 		UI.update();
 	}
 	
 	public void removeLast() {
 		inputs.remove(cursorIndex - 1);
 		cursorIndex--;
+		compositor.reset();
+		for (int i = 0; i < inputs.size(); i++) {
+			inputs.get(i).setLoc(compositor.getRow(), compositor.getCol());
+			compositor.setLoc(compositor.getRow(), compositor.getCol() + inputs.get(i).getWidth() + 2, curFont.getSize());
+		}
+		UI.update();
 		//compositor.setLoc(compositor.getRow(), compositor.getCol() - inputs.get(inputs.size() - 1).getWidth() - 2, curFont.getSize());
 	}
 	
@@ -106,7 +113,7 @@ public class LilLexiDocument {
 	}
 	
 	public void increaseCursorIndex() {
-		if (cursorIndex < inputs.size() - 1) {
+		if (cursorIndex < inputs.size()) {
 			cursorIndex++;
 		}
 	}

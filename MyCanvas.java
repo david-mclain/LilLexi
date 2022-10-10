@@ -24,6 +24,12 @@ public class MyCanvas extends JPanel {
 											control.removeLast();
 										}
 									}
+									else if(code == KeyEvent.VK_LEFT) {
+										control.decreaseCursorIndex();
+									}
+									else if (code == KeyEvent.VK_RIGHT) {
+										control.increseCursorIndex();
+									}
 									//else if (code == 9) {
 									//	for (int i = 0; i < 4; i++)
 									//		control.add(new MyCharacter(' '));
