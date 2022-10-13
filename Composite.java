@@ -117,7 +117,7 @@ public class Composite {
 			for(Glyph character: curChars) {
 				curWord += character;
 			}
-			if(!dict.contains(curWord)) {
+			if(!dict.contains(curWord.toLowerCase())) {
 				for(Glyph character: curChars) {
 					((MyCharacter) character).setSpeltCor(false);
 				}

@@ -49,6 +49,7 @@ public class LilLexiUI {
 		yes = new JPanel(null);
 		yes.add(scroll);
 		yes.setSize(new Dimension(800, 800));
+		yes.setPreferredSize(new Dimension(800, 800));
 		shell.setContentPane(yes);
 		//scroll = new JScrollPane(panel);
 		//scroll.setSize(20, 900);

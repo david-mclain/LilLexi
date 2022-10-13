@@ -2,6 +2,7 @@ package LilLexi;
 import java.util.List;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class LilLexiDocument {
@@ -15,7 +16,7 @@ public class LilLexiDocument {
 	private Font curFont;
 	private int  cursorIndex;
 	
-	public LilLexiDocument() {
+	public LilLexiDocument() throws FileNotFoundException {
 		curFont = new Font("Times New Roman", Font.PLAIN, 100);
 		inputs = new ArrayList<>();
 		undoStack = new Stack<>();
