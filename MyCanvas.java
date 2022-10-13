@@ -75,8 +75,7 @@ public class MyCanvas extends JPanel {// implements Scrollable {
 		g.setColor(Color.black);
 		g.setFont(control.getFont());
 		int[] loc = control.getCursorLoc();
-		if (loc[2] == 1)
-			g.drawString("|", loc[1], loc[0]);
+		g.drawString("|", loc[1], loc[0]);
 		List<Glyph> glyphs = control.getGlyphs();
 		for (Glyph glyph : glyphs) {
 			if (glyph instanceof MyCharacter) {

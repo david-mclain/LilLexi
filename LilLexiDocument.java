@@ -2,7 +2,6 @@ package LilLexi;
 import java.util.List;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class LilLexiDocument {
@@ -22,6 +21,7 @@ public class LilLexiDocument {
 		inputs = new ArrayList<>();
 		undoStack = new Stack<>();
 		redoStack = new Stack<>();
+		spellCheck = new SpellChecker(inputs);
 		composite = new Composite(curFont.getSize(), 0, inputs);
 		cursorIndex = 0;
 	}
@@ -161,8 +161,7 @@ public class LilLexiDocument {
 	}
 
 	public int[] getCursorLoc() {
-		int[] ret = new int[3];
-		long x = System.currentTimeMillis();
+		int[] ret = new int[2];
 		if (cursorIndex > 0) {
 			Glyph cur = inputs.get(cursorIndex - 1);
 			ret[0] = cur.getRow();
@@ -172,19 +171,12 @@ public class LilLexiDocument {
 			ret[0] = curFont.getSize();
 			ret[1] = 0;
 		}
-		if (x / 500 % 2 == 0){
-			ret[2] = 1;
-		}
-		else {
-			ret[2] = 0;
-		}
 		return ret;
 	}
 	
 	private void update() {
-		spellCheck = new SpellChecker(inputs);
-		spellCheck.checkSpelling();
 		composite.compose();
+		spellCheck.checkSpelling();
 		UI.update();
 	}
 }

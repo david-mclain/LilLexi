@@ -19,7 +19,7 @@ public class Composite {
 		compositor.reset();
 		for (int i = 0; i < inputs.size(); i++) {
 			Glyph cur = inputs.get(i);
-			if (cur instanceof MyImage) {
+			if (cur instanceof MyImage || cur instanceof MyShape) {
 				cur.setLoc(compositor.getRow() - cur.getHeight(), compositor.getCol());
 				compositor.setLoc(compositor.getRow(), compositor.getCol() + cur.getWidth() + 2, cur.getHeight());
 			}
@@ -28,10 +28,6 @@ public class Composite {
 				cur.setLoc(compositor.getRow(), compositor.getCol());
 				compositor.setLoc(compositor.getRow(), compositor.getCol() + cur.getWidth() + 2, rowStart);
 				//checkWord(inputs.get(i));
-			}
-			else if (cur instanceof MyShape) {
-				cur.setLoc(compositor.getRow() - cur.getHeight(), compositor.getCol());
-				compositor.setLoc(compositor.getRow(), compositor.getCol() + cur.getWidth() + 2, cur.getHeight());
 			}
 		}
 	}
