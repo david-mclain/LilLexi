@@ -37,6 +37,7 @@ public class Stack <T> {
 	
 	public void clear() {
 		stack = (T[]) new Object[DEFAULT_SIZE];
+		this.back = 0;
 	}
 	
 	private void resize(int newSize) {

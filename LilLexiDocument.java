@@ -16,12 +16,17 @@ public class LilLexiDocument {
 	private Font curFont;
 	private int  cursorIndex;
 	
-	public LilLexiDocument() throws FileNotFoundException {
+	public LilLexiDocument() {
 		curFont = new Font("Times New Roman", Font.PLAIN, 100);
 		inputs = new ArrayList<>();
 		undoStack = new Stack<>();
 		redoStack = new Stack<>();
-		composite = new Composite(curFont.getSize(), 0, inputs);
+		try {
+			composite = new Composite(curFont.getSize(), 0, inputs);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		cursorIndex = 0;
 	}
 	
@@ -39,6 +44,21 @@ public class LilLexiDocument {
 		Undo change = new Undo(glyph, cursorIndex, true);
 		undoStack.push(change);
 		redoStack.clear();
+		composite.compose();
+		UI.update();
+	}
+	
+	public void add(Glyph glyph, boolean undo) {
+		if (glyph instanceof  MyCharacter) {
+			glyph.setWidth(g.getFontMetrics().stringWidth(glyph.toString()));
+		}
+		else if (glyph instanceof MyShape) {
+			glyph.setLoc(glyph.getRow() - curFont.getSize(), glyph.getCol());
+		}
+		inputs.add(cursorIndex, glyph);
+		cursorIndex++;
+		Undo change = new Undo(glyph, cursorIndex, true);
+		undoStack.push(change);
 		composite.compose();
 		UI.update();
 	}
@@ -86,16 +106,18 @@ public class LilLexiDocument {
 	}
 	
 	public void undo() {
-		Undo action = undoStack.pop();
-		if(action.isInsert()) {
-			cursorIndex = action.getIndex();
-			removeLast();
-		} else {
-			cursorIndex = action.getIndex();
-			add(action.getGlyph());
+		if (!undoStack.isEmpty()) {
+			Undo action = undoStack.pop();
+			if(action.isInsert()) {
+				cursorIndex = action.getIndex();
+				removeLast(false);
+			} else {
+				cursorIndex = action.getIndex();
+				add(action.getGlyph(), false);
+			}
+			undoStack.pop();
+			redoStack.push(new Undo(action.getGlyph(), action.getIndex(), !action.isInsert()));
 		}
-		undoStack.pop();
-		redoStack.push(new Undo(action.getGlyph(), action.getIndex(), !action.isInsert()));
 	}
 	
 	public void redo() {
@@ -103,12 +125,22 @@ public class LilLexiDocument {
 			Undo action = redoStack.pop();
 			if (!action.isInsert()) {
 				cursorIndex = action.getIndex() - 1;
-				add(action.getGlyph());
+				add(action.getGlyph(), false);
 			}
 			else {
 				cursorIndex = action.getIndex() - 1;
-				removeLast();
+				removeLast(false);
 			}
+		}
+	}
+
+	private void removeLast(boolean b) {
+		if (cursorIndex > 0) {
+			cursorIndex--;
+			Undo change = new Undo(inputs.remove(cursorIndex), cursorIndex, false);
+			undoStack.push(change);
+			composite.compose();
+			UI.update();
 		}
 	}
 
@@ -137,15 +169,22 @@ public class LilLexiDocument {
 	}
 
 	public int[] getCursorLoc() {
-		int[] ret = new int[2];
+		int[] ret = new int[3];
+		long x = System.currentTimeMillis();
 		if (cursorIndex > 0) {
 			Glyph cur = inputs.get(cursorIndex - 1);
 			ret[0] = cur.getRow();
-			ret[1] = cur.getCol() + cur.getWidth();	
+			ret[1] = cur.getCol() + cur.getWidth();
 		}
 		else {
 			ret[0] = curFont.getSize();
 			ret[1] = 0;
+		}
+		if (x / 500 % 2 == 0){
+			ret[2] = 1;
+		}
+		else {
+			ret[2] = 0;
 		}
 		return ret;
 	}

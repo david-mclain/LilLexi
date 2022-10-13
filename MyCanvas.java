@@ -1,6 +1,8 @@
 package LilLexi;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
@@ -9,18 +11,21 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
+import javax.swing.Scrollable;
 
 @SuppressWarnings("serial")
-public class MyCanvas extends JPanel {
+public class MyCanvas extends JPanel {// implements Scrollable {
 	private LilLexiControl control;
 	private Graphics graphics;
 	public MyCanvas(LilLexiControl control) {
 		graphics = null;
 		setControl(control);
 		repaint();
-		this.setSize(800, 800);
+		this.setPreferredSize(new Dimension(800, 800));
+		//this.setSize(800, 800);
 		this.setBackground(Color.white);
 		this.setVisible(true);
+		this.setAutoscrolls(true);
 		this.addKeyListener(new KeyListener() {	
 								public void keyPressed(KeyEvent e) {
 									//graphics.setFont(control.getFont());
@@ -63,19 +68,20 @@ public class MyCanvas extends JPanel {
 		setFocusable(true);
 	}
 	
-	public void paint(Graphics g) {
+	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		setGraphics(g);
 		g.clearRect(0, 0, 800, 800);
 		g.setColor(Color.black);
 		g.setFont(control.getFont());
 		int[] loc = control.getCursorLoc();
-		g.drawString("|", loc[1], loc[0]);
+		if (loc[2] == 1)
+			g.drawString("|", loc[1], loc[0]);
 		List<Glyph> glyphs = control.getGlyphs();
 		for (Glyph glyph : glyphs) {
 			if (glyph instanceof MyCharacter) {
 				g.drawString(glyph.toString(), glyph.getCol(), glyph.getRow());
-				if (!((MyCharacter) glyph).getSpeltCor()) {
+				if (true) {
 					g.setColor(Color.red);
 					g.drawLine(glyph.getCol(), glyph.getRow(), glyph.getCol() + glyph.getWidth(), glyph.getRow() + 1);
 					g.setColor(Color.black);
@@ -96,7 +102,35 @@ public class MyCanvas extends JPanel {
 	
 	private void setGraphics(Graphics g) {
 		this.graphics = g;
-		System.out.println(control == null);
 		control.setGraphics(g);
 	}
+
+//	public Dimension getPreferredScrollableViewportSize() {
+//		if (getParent() == null)
+//			return getSize();
+//		Dimension d = getParent().getSize();
+//		int c = (int) Math.floor((d.width - getInsets().left - getInsets().right) / 50.0);
+//		if (c == 0)
+//			return d;
+//		int r = 20 / c;
+//		if (r * c < 20)
+//			++r;
+//		return new Dimension(c * 50, r * 50);
+//	}
+//	
+//	public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) {
+//		return 50;
+//	}
+//	
+//	public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
+//		return 10;
+//	}
+//	
+//	public boolean getScrollableTracksViewportHeight() {
+//		return false;
+//	}
+//	
+//	public boolean getScrollableTracksViewportWidth() {
+//		return getParent() != null ? getParent().getSize().width > getPreferredSize().width : true;
+//	}
 }

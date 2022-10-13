@@ -10,6 +10,8 @@ import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import java.awt.Shape;
 import javax.swing.JTextArea;
+
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -34,23 +36,25 @@ public class LilLexiUI {
 	public LilLexiUI(LilLexiControl control) {
 		this.shell = new JFrame("Lil Lexi");
 		createMenus();
-		//JScrollPane pane = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		//pane.setFocusable(false);
-		//shell.setContentPane(pane);
 		this.setController(control);
 		makeCanvas();
+		Dimension x = new Dimension(800, 800);
+		panel.setPreferredSize(x);
+		panel.setMinimumSize(x);
+		panel.setMaximumSize(x);
 		//panel.add(scroll);
 		//panel.setAutoscrolls(true);
 		scroll = new JScrollPane(panel);
-		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		scroll.setBounds(0, 0, 850, 800);
+		scroll.setBounds(0, 0, 870, 800);
+		scroll.setPreferredSize(new Dimension(870, 800));
 		scroll.setAutoscrolls(true);
 		yes = new JPanel(null);
 		yes.add(scroll);
-		yes.setSize(new Dimension(800, 800));
-		yes.setPreferredSize(new Dimension(800, 800));
-		shell.setContentPane(yes);
+		//yes.setSize(new Dimension(800, 800));
+		//yes.setBounds(0, 0, 800, 800);
+		//shell.setContentPane(yes);
 		//scroll = new JScrollPane(panel);
 		//scroll.setSize(20, 900);
 		//scroll.setVisible(true);
@@ -77,6 +81,8 @@ public class LilLexiUI {
 			public void mouseReleased(MouseEvent arg0) {}
 			
 		});
+		shell.setContentPane(yes);
+		//shell.add(scroll);
 		shell.pack();
 		shell.setSize(900, 900);
 		shell.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -95,7 +101,10 @@ public class LilLexiUI {
 		JMenu editMenu = new JMenu("Edit");
 		JMenuItem undoOption = new JMenuItem("Undo");
 		undoOption.addActionListener(e -> control.undo());
+		JMenuItem redoOption = new JMenuItem("Redo");
+		redoOption.addActionListener(e -> control.redo());
 		editMenu.add(undoOption);
+		editMenu.add(redoOption);
 		
 		// Font Menu
 		JMenu fontMenu = new JMenu("Font");
@@ -132,8 +141,6 @@ public class LilLexiUI {
 	
 	private void makeCanvas() {
 		panel = new MyCanvas(control);
-		//shell.add(panel);
-		//panel.requestFocus();
 	}
 	
 	private void createNew() {
@@ -145,6 +152,9 @@ public class LilLexiUI {
 	}
 	
 	public void update() {
+		panel.revalidate();
+		int height = (int)scroll.getPreferredSize().getHeight();
+		scroll.getVerticalScrollBar().setValue(height);
 		panel.repaint();
 	}
 	
