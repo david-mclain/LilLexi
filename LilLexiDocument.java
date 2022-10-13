@@ -174,6 +174,10 @@ public class LilLexiDocument {
 		return ret;
 	}
 	
+	public void increaseScroll() { composite.increaseScroll(); }
+	
+	public void decreaseScroll() { composite.decreaseScroll(); }
+	
 	private void update() {
 		composite.compose();
 		spellCheck.checkSpelling();

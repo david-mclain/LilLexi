@@ -78,6 +78,10 @@ public class LilLexiControl {
 		doc.increaseCursorRow();
 	}
 	
+	public void increaseScroll() { doc.increaseScroll(); }
+	
+	public void decreaseScroll() { doc.decreaseScroll(); }
+	
 	public int[] getCursorLoc() {
 		return doc.getCursorLoc();
 	}
