@@ -36,6 +36,8 @@ public class SpellChecker {
 				} else {
 					curChars.add(glyph);
 				}
+			} else {
+				isWord = true;
 			}
 				
 			if (isWord) {
