@@ -6,18 +6,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
-import java.awt.Shape;
-import javax.swing.JTextArea;
-
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Rectangle;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
@@ -27,8 +17,8 @@ public class LilLexiUI {
 	
 	private LilLexiControl control;
 	private JFrame shell;
-	private MyCanvas panel;
-	private JPanel yes;
+	private MyCanvas canvas;
+	private JPanel panel;
 	private BufferedImage image;
 	private ImageIcon icon;
 	private JScrollPane scroll;
@@ -39,32 +29,25 @@ public class LilLexiUI {
 		this.setController(control);
 		makeCanvas();
 		Dimension x = new Dimension(800, 800);
-		panel.setPreferredSize(x);
-		panel.setMinimumSize(x);
-		panel.setMaximumSize(x);
-		//panel.add(scroll);
-		//panel.setAutoscrolls(true);
-		scroll = new JScrollPane(panel);
+		canvas.setPreferredSize(x);
+		canvas.setMinimumSize(x);
+		canvas.setMaximumSize(x);
+		//canvas.add(scroll);
+		//canvas.setAutoscrolls(true);
+		scroll = new JScrollPane(canvas);
 		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scroll.setBounds(0, 0, 870, 800);
 		scroll.setPreferredSize(new Dimension(870, 800));
 		scroll.setAutoscrolls(true);
-		yes = new JPanel(null);
-		yes.add(scroll);
-		//yes.setSize(new Dimension(800, 800));
-		//yes.setBounds(0, 0, 800, 800);
-		//shell.setContentPane(yes);
-		//scroll = new JScrollPane(panel);
-		//scroll.setSize(20, 900);
-		//scroll.setVisible(true);
-		//scroll.setAutoscrolls(true);
-		//scroll.setBounds(850, 0, 20, 800);
-		shell.addMouseListener(new MouseListener() {
+		scroll.getViewport().add(canvas);
+		panel = new JPanel(null);
+		panel.add(scroll);
+		canvas.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				if (arg0.getX() <= 800)
-					panel.requestFocus();
+					canvas.requestFocus();
 				System.out.println("Row: " + arg0.getX());
 				System.out.println("Col: " + arg0.getY());
 			}
@@ -81,7 +64,7 @@ public class LilLexiUI {
 			public void mouseReleased(MouseEvent arg0) {}
 			
 		});
-		shell.setContentPane(yes);
+		shell.setContentPane(panel);
 		//shell.add(scroll);
 		shell.pack();
 		shell.setSize(900, 900);
@@ -90,48 +73,62 @@ public class LilLexiUI {
 	}
 	
 	private void createMenus() {
+		// Create menu bars
 		JMenuBar menu = new JMenuBar();
+		// Create file menu on menu bar
 		JMenu fileMenu = new JMenu("File");
-		// Create file options for new, open, save and quit
+		// Create new and quit options
 		JMenuItem newOption = new JMenuItem("New");
 		newOption.addActionListener(e -> createNew());
 		JMenuItem quitOption = new JMenuItem("Quit");
 		quitOption.addActionListener(e -> control.quit());
-		// Edit Menu
+		// Add new and quit options to file menu
+		fileMenu.add(newOption);
+		fileMenu.add(quitOption);
+		
+		// Create edit menu
 		JMenu editMenu = new JMenu("Edit");
+		// Create undo and redo options
 		JMenuItem undoOption = new JMenuItem("Undo");
 		undoOption.addActionListener(e -> control.undo());
 		JMenuItem redoOption = new JMenuItem("Redo");
 		redoOption.addActionListener(e -> control.redo());
+		// Add undo and redo options to edit menu
 		editMenu.add(undoOption);
 		editMenu.add(redoOption);
 		
-		// Font Menu
+		// Create font menu
 		JMenu fontMenu = new JMenu("Font");
+		// Create options for a few fonts
 		JMenuItem fontTNR = new JMenuItem("Times New Roman");
 		fontTNR.addActionListener(e -> changeFont("Times New Roman"));
 		JMenuItem fontMono = new JMenuItem("Monospaced");
 		fontMono.addActionListener(e -> changeFont("Monospaced"));
 		JMenuItem fontArial = new JMenuItem("Arial");
 		fontArial.addActionListener(e -> changeFont("Arial"));
+		// Add fonts to font menu
 		fontMenu.add(fontMono);
 		fontMenu.add(fontTNR);
 		fontMenu.add(fontArial);
 		
-		// Insert Menu
+		// Create insert menu
 		JMenu insertMenu = new JMenu("Insert");
+		// Create image and shape options
 		JMenuItem imageOption = new JMenuItem("Image");
 		imageOption.addActionListener(e -> addImage());
 		JMenuItem shapeOption = new JMenuItem("Shape");
 		shapeOption.addActionListener(e -> control.add(new MyShape()));
+		// Add image and shape options to insert menu
 		insertMenu.add(imageOption);
 		insertMenu.add(shapeOption);
-		// Add options to menu
-		fileMenu.add(newOption);
+		
+		// Add all menus to menu bar
 		menu.add(fileMenu);
 		menu.add(editMenu);
 		menu.add(fontMenu);
 		menu.add(insertMenu);
+		
+		// Set menu bar
 		shell.setJMenuBar(menu);
 	}
 	
@@ -140,7 +137,7 @@ public class LilLexiUI {
 	}
 	
 	private void makeCanvas() {
-		panel = new MyCanvas(control);
+		canvas = new MyCanvas(control);
 	}
 	
 	private void createNew() {
@@ -152,10 +149,10 @@ public class LilLexiUI {
 	}
 	
 	public void update() {
-		panel.revalidate();
+		canvas.revalidate();
 		int height = (int)scroll.getPreferredSize().getHeight();
 		scroll.getVerticalScrollBar().setValue(height);
-		panel.repaint();
+		canvas.repaint();
 	}
 	
 	public void setController(LilLexiControl control) {
@@ -163,18 +160,6 @@ public class LilLexiUI {
 	}
 	
 	private void addImage() {
-		setImage();
 		control.add(new MyImage(icon));
-	}
-	
-	public void setImage() {
-		System.out.println("before try");
-		try {
-			image = ImageIO.read(MyCanvas.class.getResourceAsStream("apple.jpg"));
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-		System.out.println(image == null);
-		icon = new ImageIcon(image);
 	}
 }
