@@ -2,7 +2,6 @@ package LilLexi;
 import java.util.List;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class LilLexiDocument {
@@ -16,8 +15,8 @@ public class LilLexiDocument {
 	private Font curFont;
 	private int  cursorIndex;
 	
-	public LilLexiDocument() throws FileNotFoundException {
-		curFont = new Font("Times New Roman", Font.PLAIN, 20);
+	public LilLexiDocument() {
+		curFont = new Font("Times New Roman", Font.PLAIN, 100);
 		inputs = new ArrayList<>();
 		undoStack = new Stack<>();
 		redoStack = new Stack<>();
@@ -38,6 +37,7 @@ public class LilLexiDocument {
 		cursorIndex++;
 		Undo change = new Undo(glyph, cursorIndex, true);
 		undoStack.push(change);
+		redoStack.clear();
 		composite.compose();
 		UI.update();
 	}
@@ -74,6 +74,7 @@ public class LilLexiDocument {
 			cursorIndex--;
 			Undo change = new Undo(inputs.remove(cursorIndex), cursorIndex, false);
 			undoStack.push(change);
+			redoStack.clear();
 			composite.compose();
 			UI.update();
 		}
@@ -84,30 +85,30 @@ public class LilLexiDocument {
 	}
 	
 	public void undo() {
-		if (undoStack.size() != 0) {
-			Undo action = undoStack.pop();
-			if(action.isInsert()) {
-				cursorIndex = action.getIndex();
-				removeLast();
-			} else {
-				cursorIndex = action.getIndex();
-				add(action.getGlyph());
-			}
-			redoStack.push(undoStack.pop());
+		Undo action = undoStack.pop();
+		if(action.isInsert()) {
+			cursorIndex = action.getIndex();
+			removeLast();
+		} else {
+			cursorIndex = action.getIndex();
+			add(action.getGlyph());
 		}
 		undoStack.pop();
+		redoStack.push(new Undo(action.getGlyph(), action.getIndex(), !action.isInsert()));
 	}
 	
 	public void redo() {
-		if (redoStack.size() != 0) {
-			Undo action = undoStack.pop();
-			
+		if (!redoStack.isEmpty()) {
+			Undo action = redoStack.pop();
+			if (!action.isInsert()) {
+				cursorIndex = action.getIndex() - 1;
+				add(action.getGlyph());
+			}
+			else {
+				cursorIndex = action.getIndex() - 1;
+				removeLast();
+			}
 		}
-		
-	}
-
-	public void updatePos(int x, int y) {
-		UI.update();
 	}
 
 	public void setGraphics(Graphics g) {
