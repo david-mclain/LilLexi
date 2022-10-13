@@ -14,15 +14,14 @@ import javax.swing.JPanel;
 public class MyCanvas extends JPanel {
 	private LilLexiControl control;
 	private Graphics graphics;
-	private BufferedImage image;
-	private ImageIcon icon;
-	private int i;
 	public MyCanvas() {
 		graphics = null;
 		repaint();
+		this.setSize(800, 800);
+		this.setBackground(Color.white);
+		this.setVisible(true);
 		this.addKeyListener(new KeyListener() {	
 								public void keyPressed(KeyEvent e) {
-									i++;
 									//graphics.setFont(control.getFont());
 									int code = e.getKeyCode();
 									Glyph curGlyph;
@@ -62,25 +61,20 @@ public class MyCanvas extends JPanel {
 	}
 	
 	public void paint(Graphics g) {
-		System.out.println("test");
 		super.paintComponent(g);
 		setGraphics(g);
 		g.clearRect(0, 0, 800, 800);
 		g.setColor(Color.black);
 		g.setFont(control.getFont());
-		//drawImage();
-		//icon.paintIcon(this, g, 100, 100);
-		if (control.size() > 0) {
-			int[] loc = control.getCursorLoc();
-			g.drawString("|", loc[1], loc[0]);
-		}
+		int[] loc = control.getCursorLoc();
+		g.drawString("|", loc[1], loc[0]);
 		List<Glyph> glyphs = control.getGlyphs();
 		for (Glyph glyph : glyphs) {
 			if (glyph instanceof MyCharacter) {
 				g.drawString(glyph.toString(), glyph.getCol(), glyph.getRow());
 				if (true) {
 					g.setColor(Color.red);
-					g.drawLine(glyph.getCol(), glyph.getRow(), glyph.getCol() + glyph.getWidth(), glyph.getRow());
+					g.drawLine(glyph.getCol(), glyph.getRow(), glyph.getCol() + glyph.getWidth(), glyph.getRow() + 1);
 					g.setColor(Color.black);
 				}
 			}
@@ -91,15 +85,6 @@ public class MyCanvas extends JPanel {
 				g.drawRect(glyph.getCol(), glyph.getRow(), glyph.getWidth(), glyph.getHeight());
 			}
 		}
-	}
-	
-	public void drawImage() {
-		try {
-			image = ImageIO.read(MyCanvas.class.getResourceAsStream("apple.jpg"));
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-		icon = new ImageIcon(image);
 	}
 
 	public void setControl(LilLexiControl control) {

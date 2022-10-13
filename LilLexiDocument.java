@@ -140,9 +140,15 @@ public class LilLexiDocument {
 
 	public int[] getCursorLoc() {
 		int[] ret = new int[2];
-		Glyph cur = inputs.get(cursorIndex - 1);
-		ret[0] = cur.getRow();
-		ret[1] = cur.getCol() + cur.getWidth();
+		if (cursorIndex > 0) {
+			Glyph cur = inputs.get(cursorIndex - 1);
+			ret[0] = cur.getRow();
+			ret[1] = cur.getCol() + cur.getWidth();	
+		}
+		else {
+			ret[0] = curFont.getSize();
+			ret[1] = 0;
+		}
 		return ret;
 	}
 }
