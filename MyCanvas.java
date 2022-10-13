@@ -73,7 +73,7 @@ public class MyCanvas extends JPanel {
 		for (Glyph glyph : glyphs) {
 			if (glyph instanceof MyCharacter) {
 				g.drawString(glyph.toString(), glyph.getCol(), glyph.getRow());
-				if (true) {
+				if (!((MyCharacter) glyph).getSpeltCor()) {
 					g.setColor(Color.red);
 					g.drawLine(glyph.getCol(), glyph.getRow(), glyph.getCol() + glyph.getWidth(), glyph.getRow() + 1);
 					g.setColor(Color.black);

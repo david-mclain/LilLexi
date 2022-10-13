@@ -2,6 +2,7 @@ package LilLexi;
 public class MyCharacter extends Glyph {
 	private char myChar;
 	private int row, col, hei, wid;
+	private boolean speltCor;
 
 	
 	public MyCharacter() {
@@ -15,6 +16,7 @@ public class MyCharacter extends Glyph {
 	public MyCharacter(char c) {
 		// Default values
 		this.myChar = c;
+		speltCor = true;
 	}
 	
 	@Override
@@ -55,6 +57,10 @@ public class MyCharacter extends Glyph {
 	protected void setWidth(int width) {
 		this.wid = width;
 	}
+	
+	public void setSpeltCor(boolean speltCor) { this.speltCor = speltCor; }
+	
+	public boolean getSpeltCor() { return speltCor; }
 	
 
 }
