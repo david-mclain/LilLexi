@@ -7,5 +7,5 @@ To insert shapes or images click on 'Insert' in menu bar and choose which to ins
 To change fonts click on 'Font' in menu bar then select the font you would like.
 To type just begin typing or click anywhere on the screen. You can create a new page by clicking file, then new. 
 Cursor is displayed using the character '|'.
-In order for images to display properly, please ensure that the image needs to be placed in the same directory as the .class files from compilation.
+In order for images to display properly, please ensure that the image is placed in the same directory as the .class files from compilation.
 The current dictionary just has a couple of words for reference in the dict.txt file, so any of those words are seen as correct and will not be marked as spelt incorrectly.
