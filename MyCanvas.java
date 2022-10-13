@@ -14,21 +14,17 @@ import javax.swing.JPanel;
 import javax.swing.Scrollable;
 
 @SuppressWarnings("serial")
-public class MyCanvas extends JPanel {// implements Scrollable {
+public class MyCanvas extends JPanel {
 	private LilLexiControl control;
-	private Graphics graphics;
 	public MyCanvas(LilLexiControl control) {
-		graphics = null;
 		setControl(control);
 		repaint();
 		this.setPreferredSize(new Dimension(800, 800));
-		//this.setSize(800, 800);
 		this.setBackground(Color.white);
 		this.setVisible(true);
 		this.setAutoscrolls(true);
 		this.addKeyListener(new KeyListener() {	
 								public void keyPressed(KeyEvent e) {
-									//graphics.setFont(control.getFont());
 									int code = e.getKeyCode();
 									Glyph curGlyph;
 									if (code == KeyEvent.VK_BACK_SPACE) {
@@ -48,16 +44,11 @@ public class MyCanvas extends JPanel {// implements Scrollable {
 									else if (code == KeyEvent.VK_DOWN) {
 										control.increaseCursorRow();
 									}
-									//else if (code == 9) {
-									//	for (int i = 0; i < 4; i++)
-									//		control.add(new MyCharacter(' '));
-									//}
 									else if ((code >= 44 && code <= 111) || code == 222 || code == 32 || code == 10) {
 										curGlyph = new MyCharacter(e.getKeyChar());
 										if (code >= 65 && code <= 90)
 											((MyCharacter) curGlyph).setIsLetter(true);
 										control.add(curGlyph);
-										//control.add(new MyCharacter(e.getKeyChar()));
 									}
 									repaint();
 								}
@@ -100,36 +91,7 @@ public class MyCanvas extends JPanel {// implements Scrollable {
 	}
 	
 	private void setGraphics(Graphics g) {
-		this.graphics = g;
 		control.setGraphics(g);
 	}
-
-//	public Dimension getPreferredScrollableViewportSize() {
-//		if (getParent() == null)
-//			return getSize();
-//		Dimension d = getParent().getSize();
-//		int c = (int) Math.floor((d.width - getInsets().left - getInsets().right) / 50.0);
-//		if (c == 0)
-//			return d;
-//		int r = 20 / c;
-//		if (r * c < 20)
-//			++r;
-//		return new Dimension(c * 50, r * 50);
-//	}
-//	
-//	public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) {
-//		return 50;
-//	}
-//	
-//	public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
-//		return 10;
-//	}
-//	
-//	public boolean getScrollableTracksViewportHeight() {
-//		return false;
-//	}
-//	
-//	public boolean getScrollableTracksViewportWidth() {
-//		return getParent() != null ? getParent().getSize().width > getPreferredSize().width : true;
-//	}
+	
 }
