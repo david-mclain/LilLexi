@@ -14,6 +14,7 @@ public class LilLexiDocument {
 	private Stack<Undo> undoStack;
 	private Stack<Undo> redoStack;
 	private Font curFont;
+	private SpellChecker spellCheck;
 	private int  cursorIndex;
 	
 	public LilLexiDocument() {
@@ -21,12 +22,7 @@ public class LilLexiDocument {
 		inputs = new ArrayList<>();
 		undoStack = new Stack<>();
 		redoStack = new Stack<>();
-		try {
-			composite = new Composite(curFont.getSize(), 0, inputs);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		composite = new Composite(curFont.getSize(), 0, inputs);
 		cursorIndex = 0;
 	}
 	
@@ -44,8 +40,7 @@ public class LilLexiDocument {
 		Undo change = new Undo(glyph, cursorIndex, true);
 		undoStack.push(change);
 		redoStack.clear();
-		composite.compose();
-		UI.update();
+		update();
 	}
 	
 	public void add(Glyph glyph, boolean undo) {
@@ -59,8 +54,7 @@ public class LilLexiDocument {
 		cursorIndex++;
 		Undo change = new Undo(glyph, cursorIndex, true);
 		undoStack.push(change);
-		composite.compose();
-		UI.update();
+		update();
 	}
 	
 	public void setFont(String newFont) {
@@ -72,8 +66,7 @@ public class LilLexiDocument {
 				glyph.setWidth(g.getFontMetrics().stringWidth(glyph.toString()));
 			}
 		}
-		composite.compose();
-		UI.update();
+		update();
 	}
 	
 	public Font getFont() {
@@ -87,7 +80,7 @@ public class LilLexiDocument {
 	public void clear() {
 		inputs.clear();
 		cursorIndex = 0;
-		UI.update();
+		update();
 	}
 	
 	public void removeLast() {
@@ -96,8 +89,7 @@ public class LilLexiDocument {
 			Undo change = new Undo(inputs.remove(cursorIndex), cursorIndex, false);
 			undoStack.push(change);
 			redoStack.clear();
-			composite.compose();
-			UI.update();
+			update();
 		}
 	}
 	
@@ -187,5 +179,12 @@ public class LilLexiDocument {
 			ret[2] = 0;
 		}
 		return ret;
+	}
+	
+	private void update() {
+		spellCheck = new SpellChecker(inputs);
+		spellCheck.checkSpelling();
+		composite.compose();
+		UI.update();
 	}
 }
