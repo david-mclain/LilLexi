@@ -5,13 +5,13 @@ import java.util.List;
 public class Composite {
 	private Compositor compositor;
 	private List<Glyph> inputs;
-	private int rowStart, colStart;
-	private int curRow, curCol;
+	private int rowStart, colStart, curRow, curCol, scroll;
 	
 	public Composite(int rowStart, int colStart, List<Glyph> inputs) {
 		this.rowStart = rowStart;
 		this.colStart = colStart;
 		this.inputs   = inputs;
+		scroll = 0;
 		compositor = new Compositor(rowStart, colStart);
 	}
 	
@@ -19,19 +19,15 @@ public class Composite {
 		compositor.reset();
 		for (int i = 0; i < inputs.size(); i++) {
 			Glyph cur = inputs.get(i);
-			if (cur instanceof MyImage) {
+			if (cur instanceof MyImage || cur instanceof MyShape) {
 				cur.setLoc(compositor.getRow() - cur.getHeight(), compositor.getCol());
-				compositor.setLoc(compositor.getRow(), compositor.getCol() + cur.getWidth() + 2, cur.getHeight());
+				compositor.setLoc(compositor.getRow(), compositor.getCol() + cur.getWidth() + 2, cur.getHeight() + scroll);
 			}
 			else if (cur instanceof MyCharacter) {
 				((MyCharacter) inputs.get(i)).setSpeltCor(true);
 				cur.setLoc(compositor.getRow(), compositor.getCol());
-				compositor.setLoc(compositor.getRow(), compositor.getCol() + cur.getWidth() + 2, rowStart);
+				compositor.setLoc(compositor.getRow(), compositor.getCol() + cur.getWidth() + 2, rowStart + scroll);
 				//checkWord(inputs.get(i));
-			}
-			else if (cur instanceof MyShape) {
-				cur.setLoc(compositor.getRow() - cur.getHeight(), compositor.getCol());
-				compositor.setLoc(compositor.getRow(), compositor.getCol() + cur.getWidth() + 2, cur.getHeight());
 			}
 		}
 	}
@@ -60,7 +56,7 @@ public class Composite {
 				cursor = i + 1;
 			}
 			inputs.get(i).setLoc(compositor.getRow(), compositor.getCol());
-			compositor.setLoc(compositor.getRow(), compositor.getCol() + inputs.get(i).getWidth() + 2, rowStart);
+			compositor.setLoc(compositor.getRow(), compositor.getCol() + inputs.get(i).getWidth() + 2, rowStart + scroll);
 		}
 		return cursor;
 	}
@@ -73,8 +69,12 @@ public class Composite {
 				curCol = compositor.getCol();
 			}
 			inputs.get(i).setLoc(compositor.getRow(), compositor.getCol());
-			compositor.setLoc(compositor.getRow(), compositor.getCol() + inputs.get(i).getWidth() + 2, rowStart);
+			compositor.setLoc(compositor.getRow(), compositor.getCol() + inputs.get(i).getWidth() + 2, rowStart + scroll);
 		}
 	}
+	
+	public void increaseScroll() { scroll += 10; }
+	
+	public void decreaseScroll() { scroll -= 10; }
 
 }
