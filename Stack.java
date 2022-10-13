@@ -29,7 +29,15 @@ public class Stack <T> {
 		return ret;
 	}
 	
+	public boolean isEmpty() {
+		return this.back == 0;
+	}
+	
 	public int size() {  return back;  }
+	
+	public void clear() {
+		stack = (T[]) new Object[DEFAULT_SIZE];
+	}
 	
 	private void resize(int newSize) {
 		T[] array = (T[]) new Object[newSize];
