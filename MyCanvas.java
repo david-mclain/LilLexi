@@ -49,6 +49,8 @@ public class MyCanvas extends JPanel {
 									//}
 									else if ((code >= 44 && code <= 111) || code == 222 || code == 32 || code == 10) {
 										curGlyph = new MyCharacter(e.getKeyChar());
+										if (code >= 65 && code <= 90)
+											((MyCharacter) curGlyph).setIsLetter(true);
 										control.add(curGlyph);
 										//control.add(new MyCharacter(e.getKeyChar()));
 									}

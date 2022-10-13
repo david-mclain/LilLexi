@@ -2,7 +2,7 @@ package LilLexi;
 public class MyCharacter extends Glyph {
 	private char myChar;
 	private int row, col, hei, wid;
-
+	private boolean isLetter;
 	
 	public MyCharacter() {
 		// Default values
@@ -10,11 +10,13 @@ public class MyCharacter extends Glyph {
 		col = -1;
 		hei = -1;
 		wid = -1;
+		this.isLetter = false;
 	}
 	
 	public MyCharacter(char c) {
 		// Default values
 		this.myChar = c;
+		this.isLetter = false;
 	}
 	
 	@Override
@@ -52,9 +54,11 @@ public class MyCharacter extends Glyph {
 	public void setBounds(int hei, int wid) { this.hei = hei; this.wid = wid; }
 
 	@Override
-	protected void setWidth(int width) {
-		this.wid = width;
-	}
+	protected void setWidth(int width) { this.wid = width; }
+	
+	public void setIsLetter(boolean isLetter) { this.isLetter = isLetter; }
+	
+	public boolean getIsLetter() { return this.isLetter; }
 	
 
 }
