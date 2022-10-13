@@ -2,6 +2,7 @@ package LilLexi;
 import java.util.List;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class LilLexiDocument {
@@ -11,12 +12,12 @@ public class LilLexiDocument {
 	private Graphics g;
 	private List<Glyph> inputs;
 	private Stack<Undo> undoStack;
-	private Stack<Glyph> redoStack;
+	private Stack<Undo> redoStack;
 	private Font curFont;
 	private int  cursorIndex;
 	
-	public LilLexiDocument() {
-		curFont = new Font("Times New Roman", Font.PLAIN, 100);
+	public LilLexiDocument() throws FileNotFoundException {
+		curFont = new Font("Times New Roman", Font.PLAIN, 20);
 		inputs = new ArrayList<>();
 		undoStack = new Stack<>();
 		redoStack = new Stack<>();
@@ -83,19 +84,30 @@ public class LilLexiDocument {
 	}
 	
 	public void undo() {
-		Undo action = undoStack.pop();
-		if(action.isInsert()) {
-			cursorIndex = action.getIndex();
-			removeLast();
-		} else {
-			cursorIndex = action.getIndex();
-			add(action.getGlyph());
+		if (undoStack.size() != 0) {
+			Undo action = undoStack.pop();
+			if(action.isInsert()) {
+				cursorIndex = action.getIndex();
+				removeLast();
+			} else {
+				cursorIndex = action.getIndex();
+				add(action.getGlyph());
+			}
+			redoStack.push(undoStack.pop());
 		}
 		undoStack.pop();
 	}
 	
 	public void redo() {
-		inputs.add(redoStack.pop());
+		if (redoStack.size() != 0) {
+			Undo action = undoStack.pop();
+			
+		}
+		
+	}
+
+	public void updatePos(int x, int y) {
+		UI.update();
 	}
 
 	public void setGraphics(Graphics g) {

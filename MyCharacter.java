@@ -3,7 +3,9 @@ public class MyCharacter extends Glyph {
 	private char myChar;
 	private int row, col, hei, wid;
 	private boolean isLetter;
-	
+	private boolean speltCor;
+
+
 	public MyCharacter() {
 		// Default values
 		row = -1;
@@ -17,6 +19,7 @@ public class MyCharacter extends Glyph {
 		// Default values
 		this.myChar = c;
 		this.isLetter = false;
+		speltCor = true;
 	}
 	
 	@Override
@@ -59,6 +62,10 @@ public class MyCharacter extends Glyph {
 	public void setIsLetter(boolean isLetter) { this.isLetter = isLetter; }
 	
 	public boolean getIsLetter() { return this.isLetter; }
+	
+	public void setSpeltCor(boolean speltCor) { this.speltCor = speltCor; }
+	
+	public boolean getSpeltCor() { return speltCor; }
 	
 
 }
