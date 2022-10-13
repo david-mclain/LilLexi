@@ -30,10 +30,6 @@ public class LilLexiControl {
 //		return doc.getCol();
 //	}
 	
-	public void updatePos(int x, int y) {
-		doc.updatePos(x, y);
-	}
-	
 	public void clear() {
 		doc.clear();
 	}

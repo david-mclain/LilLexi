@@ -15,7 +15,7 @@ public class MyImage extends Glyph {
 		image = inputImage;
 		// Default values
 		row = -1; col = -1;
-		hei = -1; wid = -1;
+		hei = 100; wid = 100;
 	}
 	
 	@Override

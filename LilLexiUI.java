@@ -5,6 +5,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import java.awt.Shape;
@@ -25,6 +26,7 @@ public class LilLexiUI {
 	private LilLexiControl control;
 	private JFrame shell;
 	private MyCanvas panel;
+	private JPanel yes;
 	private BufferedImage image;
 	private ImageIcon icon;
 	private JScrollPane scroll;
@@ -32,22 +34,32 @@ public class LilLexiUI {
 	public LilLexiUI(LilLexiControl control) {
 		this.shell = new JFrame("Lil Lexi");
 		createMenus();
-		shell.setSize(900, 900);
-		shell.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		shell.setVisible(true);
-		scroll = new JScrollPane();
-		scroll.setSize(20, 900);
-		scroll.setVisible(true);
-		scroll.setAutoscrolls(true);
-		scroll.setBounds(800, 0, 20, 800);
 		//JScrollPane pane = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		//pane.setFocusable(false);
 		//shell.setContentPane(pane);
+		this.setController(control);
 		makeCanvas();
-		panel.add(scroll);
+		//panel.add(scroll);
+		//panel.setAutoscrolls(true);
+		scroll = new JScrollPane(panel);
+		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		scroll.setBounds(0, 0, 850, 800);
+		scroll.setAutoscrolls(true);
+		yes = new JPanel(null);
+		yes.add(scroll);
+		yes.setSize(new Dimension(800, 800));
+		shell.setContentPane(yes);
+		//scroll = new JScrollPane(panel);
+		//scroll.setSize(20, 900);
+		//scroll.setVisible(true);
+		//scroll.setAutoscrolls(true);
+		//scroll.setBounds(850, 0, 20, 800);
 		shell.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
+				if (arg0.getX() <= 800)
+					panel.requestFocus();
 				System.out.println("Row: " + arg0.getX());
 				System.out.println("Col: " + arg0.getY());
 			}
@@ -64,7 +76,10 @@ public class LilLexiUI {
 			public void mouseReleased(MouseEvent arg0) {}
 			
 		});
-		this.setController(control);
+		shell.pack();
+		shell.setSize(900, 900);
+		shell.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		shell.setVisible(true);
 	}
 	
 	private void createMenus() {
@@ -108,7 +123,6 @@ public class LilLexiUI {
 		menu.add(fontMenu);
 		menu.add(insertMenu);
 		shell.setJMenuBar(menu);
-		//shell.pack();
 	}
 	
 	private void changeFont(String newFont) {
@@ -116,9 +130,9 @@ public class LilLexiUI {
 	}
 	
 	private void makeCanvas() {
-		panel = new MyCanvas();
-		shell.add(panel);
-		panel.requestFocus();
+		panel = new MyCanvas(control);
+		//shell.add(panel);
+		//panel.requestFocus();
 	}
 	
 	private void createNew() {
@@ -134,7 +148,6 @@ public class LilLexiUI {
 	}
 	
 	public void setController(LilLexiControl control) {
-		panel.setControl(control);
 		this.control = control;
 	}
 	

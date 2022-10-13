@@ -8,14 +8,7 @@ public class MyShape extends Glyph {
 	public MyShape() {
 		// Default values
 		row = -1; col = -1;
-		hei = -1; wid = -1;
-	}
-	
-	public MyShape(Shape inputShape) {
-		shape = inputShape;
-		// Default values
-		row = -1; col = -1;
-		hei = -1; wid = -1;
+		hei = 30; wid = 50;
 	}
 	
 	@Override

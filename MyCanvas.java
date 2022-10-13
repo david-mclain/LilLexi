@@ -14,8 +14,9 @@ import javax.swing.JPanel;
 public class MyCanvas extends JPanel {
 	private LilLexiControl control;
 	private Graphics graphics;
-	public MyCanvas() {
+	public MyCanvas(LilLexiControl control) {
 		graphics = null;
+		setControl(control);
 		repaint();
 		this.setSize(800, 800);
 		this.setBackground(Color.white);
@@ -93,6 +94,7 @@ public class MyCanvas extends JPanel {
 	
 	private void setGraphics(Graphics g) {
 		this.graphics = g;
+		System.out.println(control == null);
 		control.setGraphics(g);
 	}
 }

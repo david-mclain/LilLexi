@@ -18,8 +18,19 @@ public class Composite {
 	public void compose() {
 		compositor.reset();
 		for (int i = 0; i < inputs.size(); i++) {
-			inputs.get(i).setLoc(compositor.getRow(), compositor.getCol());
-			compositor.setLoc(compositor.getRow(), compositor.getCol() + inputs.get(i).getWidth() + 2, rowStart);
+			Glyph cur = inputs.get(i);
+			if (cur instanceof MyImage) {
+				cur.setLoc(compositor.getRow() - cur.getHeight(), compositor.getCol());
+				compositor.setLoc(compositor.getRow(), compositor.getCol() + cur.getWidth() + 2, cur.getHeight());
+			}
+			else if (cur instanceof MyCharacter) {
+				cur.setLoc(compositor.getRow(), compositor.getCol());
+				compositor.setLoc(compositor.getRow(), compositor.getCol() + cur.getWidth() + 2, rowStart);
+			}
+			else if (cur instanceof MyShape) {
+				cur.setLoc(compositor.getRow() - cur.getHeight(), compositor.getCol());
+				compositor.setLoc(compositor.getRow(), compositor.getCol() + cur.getWidth() + 2, cur.getHeight());
+			}
 		}
 	}
 	

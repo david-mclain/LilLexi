@@ -16,7 +16,7 @@ public class LilLexiDocument {
 	private int  cursorIndex;
 	
 	public LilLexiDocument() {
-		curFont = new Font("Times New Roman", Font.PLAIN, 20);
+		curFont = new Font("Times New Roman", Font.PLAIN, 100);
 		inputs = new ArrayList<>();
 		undoStack = new Stack<>();
 		redoStack = new Stack<>();
@@ -71,7 +71,6 @@ public class LilLexiDocument {
 	public void removeLast() {
 		if (cursorIndex > 0) {
 			cursorIndex--;
-			//inputs.remove(cursorIndex);
 			Undo change = new Undo(inputs.remove(cursorIndex), cursorIndex, false);
 			undoStack.push(change);
 			composite.compose();
@@ -93,25 +92,10 @@ public class LilLexiDocument {
 			add(action.getGlyph());
 		}
 		undoStack.pop();
-		//inputs.remove(inputs.size() - 1);
-		//redoStack.push(undoStack.pop());
 	}
 	
 	public void redo() {
 		inputs.add(redoStack.pop());
-		//undoStack.push(inputs.get(inputs.size() - 1));
-	}
-
-//	public int getRow() {
-//		return compositor.getRow();
-//	}
-//
-//	public int getCol() {
-//		return compositor.getCol();
-//	}
-
-	public void updatePos(int x, int y) {
-		UI.update();
 	}
 
 	public void setGraphics(Graphics g) {
