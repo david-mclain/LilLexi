@@ -1,5 +1,4 @@
 package LilLexi;
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -10,8 +9,6 @@ import javax.swing.JScrollPane;
 import java.awt.Dimension;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 public class LilLexiUI {
 	
@@ -19,7 +16,6 @@ public class LilLexiUI {
 	private JFrame shell;
 	private MyCanvas canvas;
 	private JPanel panel;
-	private BufferedImage image;
 	private ImageIcon icon;
 	private JScrollPane scroll;
 	
@@ -122,11 +118,23 @@ public class LilLexiUI {
 		insertMenu.add(imageOption);
 		insertMenu.add(shapeOption);
 		
+		// Create scroll menu
+		JMenu scrollMenu = new JMenu("Scroll");
+		// Create scroll down and up
+		JMenuItem down = new JMenuItem("Down");
+		down.addActionListener(e -> control.decreaseScroll());
+		JMenuItem up = new JMenuItem("Up");
+		up.addActionListener(e -> control.increaseScroll());
+		// Add down and up to scroll menu
+		scrollMenu.add(up);
+		scrollMenu.add(down);
+		
 		// Add all menus to menu bar
 		menu.add(fileMenu);
 		menu.add(editMenu);
 		menu.add(fontMenu);
 		menu.add(insertMenu);
+		menu.add(scrollMenu);
 		
 		// Set menu bar
 		shell.setJMenuBar(menu);
