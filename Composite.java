@@ -16,17 +16,18 @@ public class Composite {
 	}
 	
 	public void compose() {
+		compositor = new Compositor(rowStart + scroll, colStart);
 		compositor.reset();
 		for (int i = 0; i < inputs.size(); i++) {
 			Glyph cur = inputs.get(i);
 			if (cur instanceof MyImage || cur instanceof MyShape) {
 				cur.setLoc(compositor.getRow() - cur.getHeight(), compositor.getCol());
-				compositor.setLoc(compositor.getRow(), compositor.getCol() + cur.getWidth() + 2, cur.getHeight() + scroll);
+				compositor.setLoc(compositor.getRow(), compositor.getCol() + cur.getWidth() + 2, cur.getHeight());
 			}
 			else if (cur instanceof MyCharacter) {
 				((MyCharacter) inputs.get(i)).setSpeltCor(true);
 				cur.setLoc(compositor.getRow(), compositor.getCol());
-				compositor.setLoc(compositor.getRow(), compositor.getCol() + cur.getWidth() + 2, rowStart + scroll);
+				compositor.setLoc(compositor.getRow(), compositor.getCol() + cur.getWidth() + 2, rowStart);
 				//checkWord(inputs.get(i));
 			}
 		}
@@ -76,5 +77,7 @@ public class Composite {
 	public void increaseScroll() { scroll += 10; }
 	
 	public void decreaseScroll() { scroll -= 10; }
+	
+	public void resetScroll() { scroll = 0; }
 
 }

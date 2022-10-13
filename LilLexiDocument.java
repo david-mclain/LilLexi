@@ -80,6 +80,7 @@ public class LilLexiDocument {
 	public void clear() {
 		inputs.clear();
 		cursorIndex = 0;
+		composite.resetScroll();
 		update();
 	}
 	
@@ -174,9 +175,15 @@ public class LilLexiDocument {
 		return ret;
 	}
 	
-	public void increaseScroll() { composite.increaseScroll(); }
+	public void increaseScroll() { 
+		composite.increaseScroll();
+		update();
+		}
 	
-	public void decreaseScroll() { composite.decreaseScroll(); }
+	public void decreaseScroll() { 
+		composite.decreaseScroll();
+		update();
+		}
 	
 	private void update() {
 		composite.compose();
