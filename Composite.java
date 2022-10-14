@@ -35,11 +35,11 @@ public class Composite {
 		for (int i = 0; i < inputs.size(); i++) {
 			Glyph cur = inputs.get(i);
 			if (cur instanceof MyImage || cur instanceof MyShape) {
-				cur.setLoc(compositor.getRow() - cur.getHeight(), compositor.getCol());
+				cur.setLoc(compositor.getRow() - rowStart, compositor.getCol());
 				compositor.setLoc(compositor.getRow(), compositor.getCol() + cur.getWidth() + 2, cur.getHeight());
 			}
 			else if (cur instanceof MyCharacter) {
-				((MyCharacter) inputs.get(i)).setSpeltCor(true);
+				((MyCharacter) cur).setSpeltCor(true);
 				cur.setLoc(compositor.getRow(), compositor.getCol());
 				compositor.setLoc(compositor.getRow(), compositor.getCol() + cur.getWidth() + 2, rowStart);
 			}
