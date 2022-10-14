@@ -122,8 +122,7 @@ public class LilLexiDocument {
 			undoStack.push(change);
 			if (clearRedo)
 				redoStack.clear();
-			composite.compose();
-			UI.update();
+			update();
 		}
 	}
 	/**
