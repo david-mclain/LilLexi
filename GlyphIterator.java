@@ -1,4 +1,11 @@
 package LilLexi;
+/**
+ * package LilLexi contains all components for WYSIWYG text editor
+ * 
+ * @author Kyle Elison
+ * 
+ * Glyph iterator handles the iterator design pattern for the glyphs
+ */
 
 import java.util.Iterator;
 import java.util.List;

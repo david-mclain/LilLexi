@@ -1,3 +1,4 @@
+package LilLexi;
 /**
  * package LilLexi contains all components for WYSIWYG text editor
  * 
@@ -5,7 +6,7 @@
  * 
  * Compositor determines row and col for every glyph
  */
-package LilLexi;
+
 public class Compositor {
 	private int startRow, row, col;
 	private int maxHeight;

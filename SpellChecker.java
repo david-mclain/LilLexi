@@ -1,4 +1,11 @@
 package LilLexi;
+/**
+ * package LilLexi contains all components for WYSIWYG text editor
+ * 
+ * @author Kyle Elison
+ * 
+ * SpellChecker goes through glyphs and checks if words are mispelled based off provided dictionary
+ */
 
 import java.io.File;
 import java.io.FileNotFoundException;

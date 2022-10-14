@@ -1,5 +1,12 @@
 package LilLexi;
-import javax.swing.ImageIcon;
+/**
+ * package LilLexi contains all components for WYSIWYG text editor
+ * 
+ * @author David McLain
+ * 
+ * UI for LilLexi
+ */
+
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -7,8 +14,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import java.awt.Dimension;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 public class LilLexiUI {
 	
@@ -16,58 +21,33 @@ public class LilLexiUI {
 	private JFrame shell;
 	private MyCanvas canvas;
 	private JPanel panel;
-	private ImageIcon icon;
 	private JScrollPane scroll;
-	
+	/**
+	 * Instantiates UI and all of its elements
+	 * @param control - controller to communicate to document
+	 */
 	public LilLexiUI(LilLexiControl control) {
+		this.setController(control);
+	}
+	/**
+	 * Starts UI up
+	 */
+	public void start() {
 		this.shell = new JFrame("Lil Lexi");
 		createMenus();
-		this.setController(control);
 		makeCanvas();
-		Dimension x = new Dimension(800, 800);
-		canvas.setPreferredSize(x);
-		canvas.setMinimumSize(x);
-		canvas.setMaximumSize(x);
-		//canvas.add(scroll);
-		//canvas.setAutoscrolls(true);
-		scroll = new JScrollPane(canvas);
-		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		scroll.setBounds(0, 0, 870, 800);
-		scroll.setPreferredSize(new Dimension(870, 800));
-		scroll.setAutoscrolls(true);
-		scroll.getViewport().add(canvas);
+		setScroller();
 		panel = new JPanel(null);
 		panel.add(scroll);
-		canvas.addMouseListener(new MouseListener() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				if (arg0.getX() <= 800)
-					canvas.requestFocus();
-				System.out.println("Row: " + arg0.getX());
-				System.out.println("Col: " + arg0.getY());
-			}
-			@Override
-			public void mouseEntered(MouseEvent arg0) {	}
-
-			@Override
-			public void mouseExited(MouseEvent arg0) {}
-
-			@Override
-			public void mousePressed(MouseEvent arg0) {}
-
-			@Override
-			public void mouseReleased(MouseEvent arg0) {}
-			
-		});
 		shell.setContentPane(panel);
-		//shell.add(scroll);
 		shell.pack();
 		shell.setSize(900, 900);
 		shell.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		shell.setVisible(true);
 	}
-	
+	/**
+	 * Creates all menus for LilLexi to display at top
+	 */
 	private void createMenus() {
 		// Create menu bars
 		JMenuBar menu = new JMenuBar();
@@ -111,7 +91,7 @@ public class LilLexiUI {
 		JMenu insertMenu = new JMenu("Insert");
 		// Create image and shape options
 		JMenuItem imageOption = new JMenuItem("Image");
-		imageOption.addActionListener(e -> addImage());
+		imageOption.addActionListener(e -> control.add(new MyImage()));
 		JMenuItem shapeOption = new JMenuItem("Shape");
 		shapeOption.addActionListener(e -> control.add(new MyShape()));
 		// Add image and shape options to insert menu
@@ -139,35 +119,51 @@ public class LilLexiUI {
 		// Set menu bar
 		shell.setJMenuBar(menu);
 	}
-	
+	/**
+	 * Sets scroll bar on canvas
+	 */
+	private void setScroller() {
+		scroll = new JScrollPane(canvas);
+		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		scroll.setBounds(0, 0, 870, 800);
+		scroll.setPreferredSize(new Dimension(870, 800));
+		scroll.setAutoscrolls(true);
+		scroll.getViewport().add(canvas);
+	}
+	/**
+	 * Changes font
+	 * @param newFont - name of font to change to
+	 */
 	private void changeFont(String newFont) {
 		control.setFont(newFont);
 	}
-	
+	/**
+	 * Creates canvas
+	 */
 	private void makeCanvas() {
 		canvas = new MyCanvas(control);
 	}
-	
+	/**
+	 * Clears document
+	 */
 	private void createNew() {
 		control.clear();
 	}
-	
-	public void start() {
-		
-	}
-	
+	/**
+	 * Updates UI
+	 */
 	public void update() {
 		canvas.revalidate();
 		int height = (int)scroll.getPreferredSize().getHeight();
 		scroll.getVerticalScrollBar().setValue(height);
 		canvas.repaint();
 	}
-	
+	/**
+	 * Sets controller to communicate with document
+	 * @param control - controller to communicate with document
+	 */
 	public void setController(LilLexiControl control) {
 		this.control = control;
-	}
-	
-	private void addImage() {
-		control.add(new MyImage(icon));
 	}
 }

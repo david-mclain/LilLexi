@@ -1,4 +1,11 @@
 package LilLexi;
+/**
+ * package LilLexi contains all components for WYSIWYG text editor
+ * 
+ * @author David McLain
+ * 
+ * Driver program for LilLexi that starts up UI
+ */
 
 import java.io.FileNotFoundException;
 
@@ -11,6 +18,5 @@ public class LexiDriver {
 		UI.setController(control);
 		doc.setUI(UI);
 		UI.start();
-		//new TextEditor();
 	}
 }
