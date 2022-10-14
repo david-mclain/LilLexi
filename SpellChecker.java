@@ -66,7 +66,7 @@ public class SpellChecker {
 	
 	
 	private void createDict() throws FileNotFoundException {
-		Scanner s = new Scanner(new File("src/LilLexi/dict.txt"));
+		Scanner s = new Scanner(new File("bin/LilLexi/dict.txt"));
 		dict = new ArrayList<String>();
 		while (s.hasNext()){
 		    dict.add(s.next());
