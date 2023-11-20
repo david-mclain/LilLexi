@@ -1,4 +1,3 @@
-package LilLexi;
 /**
  * package LilLexi contains all components for WYSIWYG text editor
  * 
@@ -66,7 +65,7 @@ public class SpellChecker {
 	
 	
 	private void createDict() throws FileNotFoundException {
-		Scanner s = new Scanner(new File("bin/LilLexi/dict.txt"));
+		Scanner s = new Scanner(new File("dict.txt"));
 		dict = new ArrayList<String>();
 		while (s.hasNext()){
 		    dict.add(s.next());

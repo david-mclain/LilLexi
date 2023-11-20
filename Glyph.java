@@ -1,4 +1,3 @@
-package LilLexi;
 /**
  * package LilLexi contains all components for WYSIWYG text editor
  * 
